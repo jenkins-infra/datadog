@@ -1,0 +1,5 @@
+terraform-plan.out
+*.terraform
+*.tfstate
+*.tfstate.backup
+secret.tfvars
