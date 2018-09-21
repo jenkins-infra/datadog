@@ -1,0 +1,32 @@
+= Jenkins infra monitoring
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:toc:
+
+This repository is meant to hold configuration files of Jenkins infrastructure monitoring stuff.
+
+== DataDog
+
+Jenkins infrastructure is monitored using link:https://www.datadoghq.com/:[DataDog].
+
+* Main DataDog organization: https://jenkins.datadoghq.com
+* Staging DataDog organization: https://jenkins-staging.datadoghq.com
+
+== Monitors
+
+DataDog monitors are configured through link:https://www.terraform.io/[Terraform].
+
+=== Add a monitor
+
+1. For convenience, you can first create the monitor on DataDog's side, and then use the `Export` feature (monitor settings) to have a JSON representing the monitor
+2. Describe the monitor in `datadog-monitors.tf` using HCL
+3. Submit a PR. At this point, your monitor should be created to link:https://jenkins-staging.datadoghq.com[DataDog staging organization]
+4. When PR will be merged to master branch, Terraform configuration will be applied on the link:https://jenkins.datadoghq.com[main DataDog organization] (after an approval input step)
+
+== Downtime
+
+You can mute DataDog monitors using their tags during a specific interval.
+For example, if you want to mute monitors for Confluence, you can use `service:confluence` tag to mute all related monitors at once.
