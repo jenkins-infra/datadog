@@ -14,7 +14,6 @@ pipeline {
         stage('Plan') {
           agent { label 'docker' }
           steps {
-            unstash name: "terraform-config"
             tfsh {
                 sh 'make init'
                 sh 'make plan'
