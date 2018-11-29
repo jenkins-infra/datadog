@@ -16,7 +16,6 @@ pipeline {
           steps {
             tfsh {
                 sh 'make init'
-                stash name: "terraform-plan", includes: "terraform-plan.out"
             }
           }
         }
