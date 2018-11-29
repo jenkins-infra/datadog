@@ -11,6 +11,15 @@ pipeline {
     }
 
     stages {
+        stage('Init') {
+          agent { label 'docker' }
+          steps {
+            tfsh {
+                sh 'make init'
+                stash name: "terraform-plan", includes: "terraform-plan.out"
+            }
+          }
+        }
         stage('Plan') {
           agent { label 'docker' }
           steps {
