@@ -17,7 +17,7 @@ pipeline {
             tfsh {
                 sh 'make init'
                 sh 'make plan'
-                stash name: "terraform-plan", includes: "terraform-plan.out"
+                stash name: 'terraform-plan', includes: 'terraform-plan.out'
             }
           }
         }
@@ -25,16 +25,16 @@ pipeline {
           when { branch 'master' }
           steps {
             timeout(30) {
-                input message: "Apply the planned updates to DataDog?", ok: 'Apply'
+                input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
             }
           }
         }
         stage('Apply') {
           agent { label 'docker' }
           steps {
-            unstash name: "terraform-plan"
             tfsh {
                 sh 'make init'
+                unstash 'terraform-plan'
                 sh 'make apply'
             }
           }
