@@ -11,20 +11,12 @@ pipeline {
     }
 
     stages {
-        stage('Init') {
-          agent { label 'docker' }
-          steps {
-            tfsh {
-                sh 'make init'
-                stash name: "terraform-config", includes: ".terraform"
-            }
-          }
-        }
         stage('Plan') {
           agent { label 'docker' }
           steps {
             unstash name: "terraform-config"
             tfsh {
+                sh 'make init'
                 sh 'make plan'
                 stash name: "terraform-plan", includes: "terraform-plan.out"
             }
@@ -41,9 +33,9 @@ pipeline {
         stage('Apply') {
           agent { label 'docker' }
           steps {
-            unstash name: "terraform-config"
             unstash name: "terraform-plan"
             tfsh {
+                sh 'make init'
                 sh 'make apply'
             }
           }
