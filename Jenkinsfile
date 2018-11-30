@@ -21,7 +21,43 @@ pipeline {
 
 
     stages {
-        stage('Plan') {
+        // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
+        stage('Test: Apply From Zero') {
+          agent { label 'docker' }
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+            tfsh {
+                sh 'make init'
+                sh 'make destroy'
+                sh 'make plan'
+                sh 'make apply'
+                sh 'make destroy'
+            }
+          }
+        }
+        // Only on non master branch, "Test Apply from Master" prepare the environment from the master branch in order to test the upgrade procedure
+        stage('Test: Apply from Master') {
+          agent { label 'docker' }
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+            tfsh {
+                git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
+                sh 'make init'
+                sh 'make plan'
+                sh 'make apply'
+            }
+          }
+        }
+
+        stage('Plan apply') {
           agent { label 'docker' }
           steps {
             tfsh {
