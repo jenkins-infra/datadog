@@ -40,7 +40,7 @@ pipeline {
           steps {
              git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
              sh 'make init destroy plan deploy'
-             scm
+             checkout scm
              sh 'make plan deploy'
           }
         }
