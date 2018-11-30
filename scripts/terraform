@@ -4,6 +4,7 @@
 # container is always in use
 set -e  # Abort script at first error
 set -u  # Attempt to use undefined variable outputs error message, and forces an exit
+set -x
 
 ADDITIONAL_ARGS=''
 CONTAINER_NAME=hashicorp/terraform:0.11.8
