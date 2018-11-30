@@ -1,8 +1,6 @@
 TERRAFORM=./scripts/terraform
 PLAN=terraform-plan.out
 
-include credentials
-
 apply:
 	$(TERRAFORM) apply -auto-approve=true $(PLAN)
 
@@ -22,8 +20,8 @@ init: clean
 	$(TERRAFORM) init \
 		-backend-config="storage_account_name=$$TF_BACKEND_STORAGE_ACCOUNT_NAME" \
 		-backend-config="container_name=$$TF_BACKEND_CONTAINER_NAME" \
-		-backend-config="key=$$TF_BACKEND_CONTAINER_FILENAME" \
-		-backend-config="access_key=$$TF_BACKEND_ACCESS_KEY" \
+		-backend-config="key=$$TF_BACKEND_CONTAINER_FILE" \
+		-backend-config="access_key=$$TF_BACKEND_STORAGE_ACCOUNT_KEY" \
 		-force-copy \
 		plans
 
