@@ -29,7 +29,11 @@ pipeline {
             }
           }
           steps {
-              sh 'make init destroy plan deploy destroy'
+              sh 'make init'
+              sh 'make destroy'
+              sh 'make plan'
+              sh 'make apply'
+              sh 'destroy'
           }
         }
 
@@ -41,9 +45,13 @@ pipeline {
           }
           steps {
              git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
-             sh 'make init destroy plan deploy'
+             sh 'make init'
+             sh 'make destroy'
+             sh 'make plan'
+             sh 'make apply'
              checkout scm
-             sh 'make plan deploy'
+             sh 'make plan'
+             sh 'make apply'
           }
         }
 
