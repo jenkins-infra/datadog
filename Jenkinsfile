@@ -16,11 +16,11 @@ pipeline {
       TF_BACKEND_CONTAINER_NAME       = "tfstatedatadog"
       TF_BACKEND_CONTAINER_FILE       = "${ env.BRANCH_NAME=='master'?'master':'staging'}-terraform.tfstate"
       TF_BACKEND_STORAGE_ACCOUNT_NAME = "prodtfstatedatadog"
-      TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('datadog_state_account_key')
+      TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('datadog-storage-account-key')
     }
 
     stages {
-        stage('Test Provisionning From Scratch') {
+        stage('Test Configuration From Zero') {
           when {
             not {
               branch 'master'
@@ -28,6 +28,20 @@ pipeline {
           }
           steps {
               sh 'make init destroy plan deploy destroy'
+          }
+        }
+
+        stage('Test Configuration Upgrade') {
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+             git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
+             sh 'make init destroy plan deploy'
+             scm
+             sh 'make plan deploy'
           }
         }
 
