@@ -3,3 +3,5 @@ terraform-plan.out
 *.tfstate
 *.tfstate.backup
 secret.tfvars
+credentials
+terraform.tfvars
