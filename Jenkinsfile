@@ -2,7 +2,9 @@
 
 pipeline {
 
-    agent none
+    agent {
+      label 'docker'
+    }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -46,7 +48,6 @@ pipeline {
         }
 
         stage('Plan') {
-            agent { label 'docker' }
             steps {
                 sh 'make init'
                 sh 'make plan'
@@ -64,7 +65,6 @@ pipeline {
         }
 
         stage('Apply') {
-            agent { label 'docker' }
             steps {
                 sh 'make init'
                 unstash 'terraform-plan'
