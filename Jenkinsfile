@@ -10,58 +10,56 @@ pipeline {
         timestamps()
     }
 
+    environment {
+      TF_VAR_datadog_api_key          = "${ env.BRANCH_NAME=='master'?credentials('jenkins-prod-dd-api-key'):credentials('jenkins-staging-dd-api-key')}"
+      TF_VAR_datadog_app_key          = "${ env.BRANCH_NAME=='master'?credentials('jenkins-prod-dd-app-key'):credentials('jenkins-staging-dd-app-key')}"
+      TF_BACKEND_CONTAINER_NAME       = "tfstatedatadog"
+      TF_BACKEND_CONTAINER_FILE       = "${ env.BRANCH_NAME=='master'?'master':'staging'}-terraform.tfstate"
+      TF_BACKEND_STORAGE_ACCOUNT_NAME = "prodtfstatedatadog"
+      TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('datadog_state_account_key')
+    }
+
     stages {
         stage('Plan') {
-          agent { label 'docker' }
-          steps {
-            tfsh {
+            agent { label 'docker' }
+            steps {
                 sh 'make init'
                 sh 'make plan'
                 stash name: 'terraform-plan', includes: 'terraform-plan.out'
             }
-          }
         }
+
         stage('Review') {
-          when { branch 'master' }
-          steps {
-            timeout(30) {
-                input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
+            when { branch 'master' }
+            steps {
+                timeout(30) {
+                    input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
+                }
             }
-          }
         }
+
         stage('Apply') {
-          agent { label 'docker' }
-          steps {
-            tfsh {
+            agent { label 'docker' }
+            steps {
                 sh 'make init'
                 unstash 'terraform-plan'
                 sh 'make apply'
             }
+        }
+    }
+    post {
+      cleanup {
+        stage('Clean') {
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+              sh 'make init'
+              sh 'make destroy'
           }
         }
-    }
-}
-
-/**
- * tfsh is a simple function which will wrap whatever block is passed in with
- * the appropriate credentials loaded into the environment for invoking Terraform
- */
-Object tfsh(Closure body) {
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-
-    def apiKey = "jenkins-staging-dd-api-key"
-    def appKey = "jenkins-staging-dd-app-key"
-    if (env.BRANCH_NAME == 'master') {
-      apiKey = "jenkins-prod-dd-api-key"
-      appKey = "jenkins-prod-dd-app-key"
-    }
-
-    withCredentials([
-        string(credentialsId: apiKey, variable: 'TF_VAR_datadog_api_key'),
-        string(credentialsId: appKey, variable: 'TF_VAR_datadog_app_key'),
-        ]) {
-        ansiColor('xterm') {
-            body.call()
-        }
+      }
     }
 }
