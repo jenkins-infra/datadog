@@ -20,6 +20,17 @@ pipeline {
     }
 
     stages {
+        stage('Test Provisionning From Scratch') {
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+              sh 'make init destroy plan deploy destroy'
+          }
+        }
+
         stage('Plan') {
             agent { label 'docker' }
             steps {
@@ -46,20 +57,5 @@ pipeline {
                 sh 'make apply'
             }
         }
-    }
-    post {
-      cleanup {
-        stage('Clean') {
-          when {
-            not {
-              branch 'master'
-            }
-          }
-          steps {
-              sh 'make init'
-              sh 'make destroy'
-          }
-        }
-      }
     }
 }
