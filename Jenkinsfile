@@ -10,15 +10,60 @@ pipeline {
         timestamps()
     }
 
+    environment {
+      TF_VAR_datadog_api_key          = "${ env.BRANCH_NAME=='master'?credentials('jenkins-prod-dd-api-key'):credentials('jenkins-staging-dd-api-key')}"
+      TF_VAR_datadog_app_key          = "${ env.BRANCH_NAME=='master'?credentials('jenkins-prod-dd-app-key'):credentials('jenkins-staging-dd-app-key')}"
+      TF_BACKEND_CONTAINER_NAME       = "tfstatedatadog"
+      TF_BACKEND_CONTAINER_FILE       = "${ env.BRANCH_NAME=='master'?'master':'staging'}-terraform.tfstate"
+      TF_BACKEND_STORAGE_ACCOUNT_NAME = "prodtfstatedatadog"
+      TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('datadog-storage-account-key')
+    }
+
+
     stages {
-        stage('Plan') {
+        // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
+        stage('Test: Apply From Zero') {
+          agent { label 'docker' }
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+            tfsh {
+                sh 'make init'
+                sh 'make destroy'
+                sh 'make plan'
+                sh 'make apply'
+                sh 'make destroy'
+            }
+          }
+        }
+        // Only on non master branch, "Test Apply from Master" prepare the environment from the master branch in order to test the upgrade procedure
+        stage('Test: Apply from Master') {
+          agent { label 'docker' }
+          when {
+            not {
+              branch 'master'
+            }
+          }
+          steps {
+            tfsh {
+                git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
+                sh 'make init'
+                sh 'make plan'
+                sh 'make apply'
+            }
+          }
+        }
+
+        stage('Plan apply') {
           agent { label 'docker' }
           steps {
-            unstash name: "terraform-config"
             tfsh {
                 sh 'make init'
                 sh 'make plan'
-                stash name: "terraform-plan", includes: "terraform-plan.out"
+                stash name: 'terraform-plan', includes: 'terraform-plan.out'
             }
           }
         }
@@ -26,16 +71,16 @@ pipeline {
           when { branch 'master' }
           steps {
             timeout(30) {
-                input message: "Apply the planned updates to DataDog?", ok: 'Apply'
+                input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
             }
           }
         }
         stage('Apply') {
           agent { label 'docker' }
           steps {
-            unstash name: "terraform-plan"
             tfsh {
                 sh 'make init'
+                unstash 'terraform-plan'
                 sh 'make apply'
             }
           }
