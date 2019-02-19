@@ -1,8 +1,7 @@
 #!/usr/bin/env groovy
 
 pipeline {
-
-    agent none
+    agent { label 'docker' }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -23,7 +22,6 @@ pipeline {
     stages {
         // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
         stage('Test: Apply From Zero') {
-          agent { label 'docker' }
           when {
             not {
               branch 'master'
@@ -41,7 +39,6 @@ pipeline {
         }
         // Only on non master branch, "Test Apply from Master" prepare the environment from the master branch in order to test the upgrade procedure
         stage('Test: Apply from Master') {
-          agent { label 'docker' }
           when {
             not {
               branch 'master'
@@ -58,7 +55,6 @@ pipeline {
         }
 
         stage('Plan apply') {
-          agent { label 'docker' }
           steps {
             tfsh {
                 sh 'make init'
@@ -76,7 +72,6 @@ pipeline {
           }
         }
         stage('Apply') {
-          agent { label 'docker' }
           steps {
             tfsh {
                 sh 'make init'
