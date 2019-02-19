@@ -1,0 +1,23 @@
+init_config:
+
+instances:
+    - package: debian
+      min_collection_interval: 60
+    - package: debian-stable
+      min_collection_interval: 60
+    - package: opensuse
+      min_collection_interval: 60
+    - package: opensuse-stable
+      min_collection_interval: 60
+    - package: osx
+      min_collection_interval: 60
+    - package: osx-stable
+      min_collection_interval: 60
+    - package: redhat
+      min_collection_interval: 60
+    - package: redhat-stable
+      min_collection_interval: 60
+    - package: windows
+      min_collection_interval: 60
+    - package: windows-stable
+      min_collection_interval: 60
