@@ -10,40 +10,40 @@ except ImportError:
     # ...if the above failed, the check is running in Agent version 6 or later
     from datadog_checks.checks import AgentCheck
 
-class PackageCanDownload(AgentCheck):
+
+class PackageCanBeDownloaded(AgentCheck):
     metadataUrl = 'https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml'
 
     def getLatestWeeklyVersion(self):
-        try: 
+        try:
             url = self.metadataUrl
             tree = ET.parse(urllib2.urlopen(url))
             root = tree.getroot()
             return root.find('versioning/latest').text
-    
+
         except urllib2.URLError, e:
             print 'Something went wrong while retrieving weekly version: {}'.format(e)
-    
+
     def getLatestStableVersion(self):
-        try: 
+        try:
             stable_version = []
             url = self.metadataUrl
             tree = ET.parse(urllib2.urlopen(url))
             root = tree.getroot()
-    
+
             versions = root.findall('versioning/versions/version')
-    
-            for version in versions: 
+
+            for version in versions:
                 if len(version.text.split('.')) == 3:
                     stable_version.append(version.text)
-    
+
             return stable_version[-1]
-    
+
         except urllib2.URLError, e:
             print 'Something went wrong while retrieving stable version: {}'.format(e)
-    
-    
-    def isExist(self,distribution, url):
-        try: 
+
+    def isExist(self, distribution, url):
+        try:
             rc = urllib2.urlopen(url).code
             if rc != 200:
                 print 'rc should be 200 but is {}'.format(rc)
@@ -53,10 +53,10 @@ class PackageCanDownload(AgentCheck):
             if e.code == 404:
                 print '{} package not found on {}'.format(distribution, url)
             else:
-                print 'Something went wrong with url {} for {} package: {}'.format(url,distribution, e)
+                print 'Something went wrong with url {} for {} package: {}'.format(url, distribution, e)
             return 0
 
-    def check(self,instance):
+    def check(self, instance):
 
         weeklyVersion = self.getLatestWeeklyVersion()
         stableVersion = self.getLatestStableVersion()
@@ -75,12 +75,12 @@ class PackageCanDownload(AgentCheck):
 
         metric = 'jenkins.package.can_download'
         package = instance['package']
-        self.warning("PackageCanDownload: {}".format(package))
+        self.warning("PackageCanBeDownloaded: {}".format(package))
         tags = [
             "package:" + package,
         ]
 
         if endpoints.has_key(package):
-            self.gauge(metric,self.isExist(package, endpoints[package]),tags)
+            self.gauge(metric, self.isExist(package, endpoints[package]), tags)
         else:
             self.warning("PackageCanDownload: Package {} is not supported".format(package))
