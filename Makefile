@@ -40,4 +40,7 @@ refresh:
 validate:
 	$(TERRAFORM) validate plans
 
+check:
+	cd docker && $(MAKE) check
+
 .PHONY: apply clean destroy init init-local plan refresh validate

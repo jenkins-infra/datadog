@@ -2,6 +2,7 @@ terraform-plan.out
 *.terraform
 *.tfstate
 *.tfstate.backup
+*.pyc
 secret.tfvars
 credentials
 terraform.tfvars

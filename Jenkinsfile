@@ -20,6 +20,11 @@ pipeline {
 
 
     stages {
+        stage('Test: Datadog Custom Checks'){
+          steps {
+            sh 'make check'
+          }
+        }
         // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
         stage('Test: Apply From Zero') {
           when {
