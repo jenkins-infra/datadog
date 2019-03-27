@@ -20,87 +20,78 @@ pipeline {
 
 
   stages {
-    stage("Datadog"){
-      failFast true
-      parralel {
-        stage('Docker'){
-          stage('Build'){
-            steps {
-              sh 'make build.docker'
-            }
-          }
-          stage('Test'){
-            steps {
-              sh 'make test.docker'
-            }
-          }
-          stage('Publish'){
-            steps {
-              sh 'make publish.docker'
-            }
-          }
+    stage('Build Datadog Docker Image'){
+      steps {
+        sh 'make build.docker'
+      }
+    }
+    stage('Test Datadog Docker Image'){
+      steps {
+        sh 'make test.docker'
+      }
+    }
+    stage('Publish Datadog Docker Image'){
+      steps {
+        sh 'make publish.docker'
+      }
+    }
+    // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
+    stage('Test: Apply From Zero') {
+      when {
+        not {
+          branch 'master'
         }
-        stage('Terraform'){
-          // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
-          stage('Test: Apply From Zero') {
-            when {
-              not {
-                branch 'master'
-              }
-            }
-            steps {
-              tfsh {
-                  sh 'make init'
-                  sh 'make destroy'
-                  sh 'make plan'
-                  sh 'make apply'
-                  sh 'make destroy'
-              }
-            }
-          }
-          // Only on non master branch, "Test Apply from Master" prepare the environment from the master branch in order to test the upgrade procedure
-          stage('Test: Apply from Master') {
-            when {
-              not {
-                branch 'master'
-              }
-            }
-            steps {
-              tfsh {
-                  git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
-                  sh 'make init'
-                  sh 'make plan'
-                  sh 'make apply'
-              }
-            }
-          }
+      }
+      steps {
+        tfsh {
+            sh 'make init'
+            sh 'make destroy'
+            sh 'make plan'
+            sh 'make apply'
+            sh 'make destroy'
+        }
+      }
+    }
+    // Only on non master branch, "Test Apply from Master" prepare the environment from the master branch in order to test the upgrade procedure
+    stage('Test: Apply from Master') {
+      when {
+        not {
+          branch 'master'
+        }
+      }
+      steps {
+        tfsh {
+            git 'https://github.com/jenkins-infra/jenkins-infra-monitoring.git'
+            sh 'make init'
+            sh 'make plan'
+            sh 'make apply'
+        }
+      }
+    }
 
-          stage('Plan apply') {
-            steps {
-              tfsh {
-                  sh 'make init'
-                  sh 'make plan'
-                  stash name: 'terraform-plan', includes: 'terraform-plan.out'
-              }
-            }
-          }
-          stage('Review') {
-            when { branch 'master' }
-            steps {
-              timeout(30) {
-                  input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
-              }
-            }
-          }
-          stage('Apply') {
-            steps {
-              tfsh {
-                  sh 'make init'
-                  unstash 'terraform-plan'
-                  sh 'make apply'
-              }
-            }
-          }
+    stage('Plan apply') {
+      steps {
+        tfsh {
+            sh 'make init'
+            sh 'make plan'
+            stash name: 'terraform-plan', includes: 'terraform-plan.out'
+        }
+      }
+    }
+    stage('Review') {
+      when { branch 'master' }
+      steps {
+        timeout(30) {
+            input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
+        }
+      }
+    }
+    stage('Apply') {
+      steps {
+        tfsh {
+            sh 'make init'
+            unstash 'terraform-plan'
+            sh 'make apply'
         }
       }
     }
