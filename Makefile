@@ -4,6 +4,15 @@ PLAN=terraform-plan.out
 apply:
 	$(TERRAFORM) apply -auto-approve=true $(PLAN)
 
+build.docker:
+	$(MAKE) -C docker build
+
+test.docker:
+	cd docker && $(MAKE) check
+
+publish.docker:
+	$(MAKE) -C docker publish
+
 clean:
 	rm -f ${PLAN}
 	rm -Rf .terraform/
@@ -40,7 +49,5 @@ refresh:
 validate:
 	$(TERRAFORM) validate plans
 
-check:
-	cd docker && $(MAKE) check
 
 .PHONY: apply clean destroy init init-local plan refresh validate
