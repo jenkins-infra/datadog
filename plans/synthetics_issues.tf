@@ -19,6 +19,12 @@ resource "datadog_synthetics_test" "issuesjenkinsio" {
   message = "Notify @pagerduty"
   tags = ["production", "jenkins.io"]
 
+  device_ids = [
+    "laptop_large",
+    "tablet",
+    "mobile_small"
+  ]
+
   status = "live"
 }
 
@@ -48,6 +54,12 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   name = "Test issues.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins-ci.org"]
+
+  device_ids = [
+    "laptop_large",
+    "tablet",
+    "mobile_small"
+  ]
 
   status = "live"
 }

@@ -20,4 +20,11 @@ resource "datadog_synthetics_test" "cijenkinsio" {
   tags = ["production", "jenkins.io"]
 
   status = "live"
+
+  device_ids = [
+    "laptop_large",
+    "tablet",
+    "mobile_small"
+
+  ]
 }

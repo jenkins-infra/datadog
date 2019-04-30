@@ -22,5 +22,12 @@ resource "datadog_synthetics_test" "accountsApp" {
     "production"
   ]
 
+  device_ids = [
+    "laptop_large",
+    "tablet",
+    "mobile_small"
+
+  ]
+
   status = "live"
 }

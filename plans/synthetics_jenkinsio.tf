@@ -15,9 +15,14 @@ resource "datadog_synthetics_test" "jenkinsio" {
   options {
     tick_every = 900
   }
-  name = "Test jenkins.io"
+  name = "Jenkins.io"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins.io"]
 
   status = "live"
+  device_ids = [
+    "laptop_large",
+    "tablet",
+    "mobile_small"
+  ]
 }
