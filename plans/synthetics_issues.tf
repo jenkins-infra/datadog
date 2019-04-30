@@ -22,7 +22,7 @@ resource "datadog_synthetics_test" "issues.jenkins.io" {
   status = "live"
 }
 
-resource "datadog_synthetics_test" "issues.jenkins-ci.org" {
+resource "datadog_synthetics_test" "issues.jenkins_ci.org" {
   type = "browser"
   request {
     method = "GET"

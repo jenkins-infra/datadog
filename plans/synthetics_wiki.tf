@@ -22,7 +22,7 @@ resource "datadog_synthetics_test" "wiki.jenkins.io" {
   status = "live"
 }
 
-resource "datadog_synthetics_test" "wiki.jenkins-ci.org" {
+resource "datadog_synthetics_test" "wiki.jenkins_ci.org" {
   type = "browser"
   request {
     method = "GET"
