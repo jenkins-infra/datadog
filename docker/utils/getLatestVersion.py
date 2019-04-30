@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+import sys
 
 try:
     # For Python 3.0 and later
@@ -11,5 +12,10 @@ except ImportError:
 
 url = 'https://api.github.com/repos/DataDog/datadog-agent/releases/latest'
 data = json.load(urlopen(url))
+version = 'tag_name'
 
-print(data['name'])
+if version in data:
+    print(data[version])
+else:
+    print("No version found in json { '%s': '?'} from %s" % (version, url))
+    sys.exit(1)
