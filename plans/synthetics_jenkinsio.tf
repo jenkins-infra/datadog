@@ -1,4 +1,4 @@
-resource "datadog_synthetics_test" "jenkins.io" {
+resource "datadog_synthetics_test" "jenkinsio" {
   type = "browser"
   request {
     method = "GET"

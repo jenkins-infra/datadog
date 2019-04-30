@@ -1,4 +1,4 @@
-resource "datadog_synthetics_test" "wiki.jenkins.io" {
+resource "datadog_synthetics_test" "wikijenkinsio" {
   type = "browser"
   request {
     method = "GET"
@@ -22,7 +22,7 @@ resource "datadog_synthetics_test" "wiki.jenkins.io" {
   status = "live"
 }
 
-resource "datadog_synthetics_test" "wiki.jenkins_ci.org" {
+resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   type = "browser"
   request {
     method = "GET"

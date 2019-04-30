@@ -1,4 +1,4 @@
-resource "datadog_synthetics_test" "issues.jenkins.io" {
+resource "datadog_synthetics_test" "issuesjenkinsio" {
   type = "browser"
   request {
     method = "GET"
@@ -22,7 +22,7 @@ resource "datadog_synthetics_test" "issues.jenkins.io" {
   status = "live"
 }
 
-resource "datadog_synthetics_test" "issues.jenkins_ci.org" {
+resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   type = "browser"
   request {
     method = "GET"
