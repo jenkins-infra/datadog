@@ -15,7 +15,7 @@ resource "datadog_synthetics_test" "accountsApp" {
   options {
     tick_every = 900
   }
-  name = "Test account.jenkins.io"
+  name = "account.jenkins.io"
   message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
