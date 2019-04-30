@@ -15,7 +15,7 @@ resource "datadog_synthetics_test" "wikijenkinsio" {
   options {
     tick_every = 900
   }
-  name = "Test wiki.jenkins.io"
+  name = "wiki.jenkins.io"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins.io"]
 
@@ -32,7 +32,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   type = "browser"
   request {
     method = "GET"
-    url = "https://wiki.jenkins-ci.org/status"
+    url = "wiki.jenkins-ci.org/status"
   }
   assertions = [
     {
@@ -48,7 +48,8 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
     }
   ]
   locations = [ "aws:eu-central-1" ]
- # Doesn't work at the moment
+ # Can't work at the moment according datadog message
+ # Synthetics is only available for the Datadog US site.
  # locations = [
  #   "aws:eu-central-1",
  #   "aws:eu-central-2",

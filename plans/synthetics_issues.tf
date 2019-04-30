@@ -15,7 +15,7 @@ resource "datadog_synthetics_test" "issuesjenkinsio" {
   options {
     tick_every = 900
   }
-  name = "Test issues.jenkins.io"
+  name = "issues.jenkins.io"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins.io"]
 
@@ -44,14 +44,13 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
       type = "header"
       operator = "is"
       target = "location: https://issues.jenkins.io/"
-      
-    } 
+    }
   ]
   locations = [ "aws:eu-central-1" ]
   options {
     tick_every = 900
   }
-  name = "Test issues.jenkins-ci.org"
+  name = "issues.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins-ci.org"]
 

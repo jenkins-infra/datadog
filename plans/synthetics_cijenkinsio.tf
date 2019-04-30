@@ -15,7 +15,7 @@ resource "datadog_synthetics_test" "cijenkinsio" {
   options {
     tick_every = 900
   }
-  name = "Test ci.jenkins.io"
+  name = "ci.jenkins.io"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins.io"]
 
