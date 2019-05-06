@@ -32,7 +32,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   type = "browser"
   request {
     method = "GET"
-    url = "wiki.jenkins-ci.org/status"
+    url = "https://wiki.jenkins-ci.org/status"
   }
   assertions = [
     {
@@ -43,7 +43,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
     {
       type = "header"
       operator = "is"
-      target = "location: https://wiki.jenkins.io/"
+      target = "location: https://wiki.jenkins.io/status"
 
     }
   ]
