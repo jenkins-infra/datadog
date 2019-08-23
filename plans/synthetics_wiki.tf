@@ -61,7 +61,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   options {
     tick_every = 900
   }
-  name = "Test wiki.jenkins-ci.org"
+  name = "wiki.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags = ["production", "jenkins-ci.org"]
 
