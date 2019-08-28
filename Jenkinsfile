@@ -82,14 +82,6 @@ pipeline {
         }
       }
     }
-    stage('Review') {
-      when { branch 'master' }
-      steps {
-        timeout(30) {
-            input message: 'Apply the planned updates to DataDog?', ok: 'Apply'
-        }
-      }
-    }
     stage('Apply') {
       steps {
         tfsh {
