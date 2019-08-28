@@ -244,31 +244,6 @@ EOT
   tags = ["terraformed:true", "*"]
 }
 
-resource "datadog_monitor" "kubelet_ping_check" {
-  name               = "kubelet ping check failing"
-  type               = "service check"
-  message            = "@pagerduty"
-
-  query = "\"kubernetes.kubelet.check.ping\".over(\"*\").by(\"host\").last(4).count_by_status()"
-
-  notify_audit        = false
-  timeout_h           = 0
-  locked              = false
-  include_tags        = false
-  notify_no_data      = true
-  no_data_timeframe   = 10
-  renotify_interval   = 5
-  new_host_delay      = 300
-  require_full_window = true
-
-  thresholds {
-      critical = 3,
-      warning  = 3
-  }
-
-  tags = ["terraformed:true", "*"]
-}
-
 resource "datadog_monitor" "service_unreachable" {
   name               = "{{url.name}} is unreachable"
   type               = "service check"
