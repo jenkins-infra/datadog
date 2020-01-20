@@ -270,7 +270,7 @@ resource "datadog_monitor" "service_unreachable" {
 }
 
 resource "datadog_monitor" "jenkins_buildqueue_size" {
-  name               = "Huge Job Queue on {{host.name}"
+  name               = "Huge Job Queue on {{host.name}}"
   type               = "metric alert"
   message            = "{{#is_alert}} Please forward the alert in #jenkins-infra regardless if you can('t) address this issue.\n\nTo fix look a the following steps:\n\n1. Is there any disk space issues on {{ host.name }}\n2. Does your linux or windows virtual machines correctly provisioned?\n3. Does your aci containers instances correctly provisioned?\n\nDon't hesitate to ask help to someone [here](https://github.com/jenkins-infra/runbooks#contact)\n\n{{/is_alert}}\n\n{{#is_recovery}} Job Queue size is back to normal {{/is_recovery}}\n @pagerduty"
   query = "avg(last_5m):max:jenkins.queue.size{*} > 150"
