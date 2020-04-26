@@ -249,7 +249,7 @@ resource "datadog_monitor" "service_unreachable" {
   type               = "service check"
   message            = "@oncall"
 
-  query = "\"http.can_connect\".over(\"*\").last(4).count_by_status()"
+  query = "\"http.can_connect\".over(\"*\").exclude(\"instance:repo.azure.jenkins.io\",\"instance:evergreen.jenkins.io\").last(4).count_by_status()"
 
   notify_audit        = false
   timeout_h           = 0
