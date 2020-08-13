@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 pipeline {
-  agent { label 'docker&&linux' }
+  agent { label 'docker' }
 
   options {
       buildDiscarder(logRotator(numToKeepStr: '10'))
