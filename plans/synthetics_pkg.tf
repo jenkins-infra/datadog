@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "pkg_jenkins_io" {
   type = "browser"
   request {
     method = "GET"
-    url = "https://pkg.jenkins.io"
+    url = "https://pkg.origin.jenkins.io"
   }
   assertions = [
     {
@@ -15,7 +15,7 @@ resource "datadog_synthetics_test" "pkg_jenkins_io" {
   options {
     tick_every = 900
   }
-  name = "pkg.jenkins.io"
+  name = "pkg.origin.jenkins.io"
   message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
