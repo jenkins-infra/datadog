@@ -38,7 +38,7 @@ They are multiple ways to contribute to those dashboards:
 ==== Public Dashboard
 
 * link:https://p.datadoghq.com/sb/0Igb9a-a5fcf385fd798d5eebcab7b52f5747df[Confluence]
-* link:https://p.datadoghq.com/sb/0Igb9a-e3831323722f931efe38cb02026d1974[Confluence & Jira Load]
+* link:https://p.datadoghq.com/sb/0Igb9a-e3831323722f931efe38cb02026d1974[Confluence Load]
 * link:https://p.datadoghq.com/sb/0Igb9a-fcf64e96ade0909af164628af8d9643b[Incidents]
 
 == Downtime
