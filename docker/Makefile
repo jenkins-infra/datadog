@@ -1,10 +1,8 @@
 IMAGE=jenkins-infra/datadog
-VERSION=$(shell ./utils/getLatestVersion.py)
-HASH=$(shell tar cf - . | md5sum | cut -c 1-6)
-TAG=$(VERSION)-$(HASH)
+TAG=7
 
 build:
-	docker build -t $(IMAGE):$(TAG) --build-arg VERSION=${VERSION} .
+	docker build -t $(IMAGE):$(TAG) --build-arg TAG="$(TAG)" .
 
 check:
 	for check in `ls checks.d | sed 's/.py//'`; \
@@ -22,6 +20,7 @@ clean:
 
 publish:
 	docker push $(IMAGE):$(TAG)
+	docker push $(IMAGE):latest
 
 shell:
 	docker run \
