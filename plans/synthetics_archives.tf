@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "archives_jenkins_io" {
   type = "browser"
   request {
     method = "GET"
-    url = "http://archives.jenkins.io"
+    url = "https://archives.jenkins.io"
   }
   assertions = [
     {
@@ -36,7 +36,7 @@ resource "datadog_synthetics_test" "archives_jenkinsci_org" {
   type = "browser"
   request {
     method = "GET"
-    url = "http://archives.jenkins-ci.org"
+    url = "https://archives.jenkins-ci.org"
   }
   assertions = [
     {
