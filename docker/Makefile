@@ -1,4 +1,4 @@
-IMAGE=jenkins-infra/datadog
+IMAGE=jenkinsciinfra/datadog
 TAG=7
 
 build:
