@@ -118,6 +118,8 @@ class PackageCanBeDownloaded(AgentCheck):
                       .format(self.hostname, weekly_version),
             'windows': 'https://{}/windows/{}/jenkins.msi'
                       .format(self.hostname, weekly_version),
+            'war': 'https://{}/war/{}/jenkins.war'
+                      .format(p.hostname, weekly_version),
             'debian-stable': 'https://{}/debian-stable/jenkins_{}_all.deb'
                       .format(self.hostname, stable_version),
             'redhat-stable': 'https://{}/redhat-stable/jenkins-{}-1.1.noarch.rpm'
@@ -126,6 +128,8 @@ class PackageCanBeDownloaded(AgentCheck):
                       .format(self.hostname, stable_version),
             'opensuse-stable': 'https://{}/opensuse-stable/jenkins-{}-1.2.noarch.rpm'
                       .format(self.hostname, stable_version),
+            'war-stable': 'https://{}/war-stable/{}/jenkins.war'
+                      .format(p.hostname, stable_version),
         }
 
         metric = 'jenkins.package.available'
@@ -156,6 +160,8 @@ if __name__ == "__main__":
                   .format(p.hostname, weekly_version),
         'opensuse': 'https://{}/opensuse/jenkins-{}-1.2.noarch.rpm'
                   .format(p.hostname, weekly_version),
+        'war': 'https://{}/war/{}/jenkins.war'
+                  .format(p.hostname, weekly_version),
         'windows': 'https://{}/windows/{}/jenkins.msi'
                   .format(p.hostname, weekly_version),
         'debian-stable': 'https://{}/debian-stable/jenkins_{}_all.deb'
@@ -166,6 +172,8 @@ if __name__ == "__main__":
                   .format(p.hostname, stable_version),
         'opensuse-stable': 'https://{}/opensuse-stable/jenkins-{}-1.2.noarch.rpm'
                   .format(p.hostname, stable_version),
+        'war-stable': 'https://{}/war-stable/{}/jenkins.war'
+                  .format(p.hostname, stable_version),
     }
 
     print("Latest weekly version: {}".format(weekly_version))
@@ -175,7 +183,8 @@ if __name__ == "__main__":
         "debian", "debian-stable",
         "redhat", "redhat-stable",
         "opensuse", "opensuse-stable",
-        "windows", "windows-stable"
+        "windows", "windows-stable",
+        "war", "war-stable",
     ]
 
     for package in packages:
