@@ -12,11 +12,19 @@ from datadog_checks.base.checks import AgentCheck
 def get_latest_version(versions):
     '''
         get_latest_version takes a list of Jenkins versions
-        then return the latest one
+        then return the latest one.
+        It sorts separatelly each Jenkins versions components
+        which follow the pattern X.Y.Z where:
+            - X.Y is a weekly version
+            - X.Y.Z is a stable version
+        So we retrieve the latest X component version.
+        Then we look for the latest valid Y version considering X.
+        Finally we look for the latest Z version considering X.Y
     '''
 
     results = []
-    for i in range(10):
+    # for i in range(3) limit the sort to the first 3 components
+    for i in range(3):
         solutions = []
         for version in versions:
             values = version.split('.')
