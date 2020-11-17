@@ -106,30 +106,6 @@ resource "datadog_monitor" "disk_space" {
   tags = ["terraformed:true", "*"]
 }
 
-resource "datadog_monitor" "jira_down" {
-  name               = "JIRA is down"
-  type               = "service check"
-  message            = "@all @pagerduty JIRA is down"
-
-  query = "\"process.up\".over(\"host:edamame\",\"process:jira\").last(6).count_by_status()"
-
-  notify_audit        = false
-  timeout_h           = 0
-  locked              = false
-  include_tags        = false
-  notify_no_data      = true
-  no_data_timeframe   = 5
-  renotify_interval   = 0
-
-  thresholds {
-      critical = 5,
-      warning  = 3,
-      ok       = 1
-  }
-
-  tags = ["terraformed:true", "service:jira"]
-}
-
 resource "datadog_monitor" "jenkins_dns" {
   name               = "Jenkins DNS may be broken, non-responsive"
   type               = "metric alert"

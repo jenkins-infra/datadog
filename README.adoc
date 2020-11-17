@@ -31,14 +31,14 @@ The Jenkins infra project uses multiple private and public dashboard to have qui
 
 They are multiple ways to contribute to those dashboards:
 
-* If you think a specific dashboard would be usefull for the community, feel free to open a Jira ticket on link:https://issues.jenkins-ci.org/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] with a complete description, why someone should implement it and don't forget to set the component to 'datadog'.
+* If you think a specific dashboard would be usefull for the community, feel free to open a Jira ticket on link:https://issues.jenkins.io/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] with a complete description, why someone should implement it and don't forget to set the component to 'datadog'.
 
-* If you have sparetime and want to practice or learn Terraform, feel free to look at our Jira board link:https://issues.jenkins-ci.org/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] and then open a Pull Request on this repository with your changes, your PR will be tested on link:https://ci.jenkins.io/job/Infra/job/datadog/job/master/[ci.jenkins.io]
+* If you have sparetime and want to practice or learn Terraform, feel free to look at our Jira board link:https://issues.jenkins.io/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] and then open a Pull Request on this repository with your changes, your PR will be tested on link:https://ci.jenkins.io/job/Infra/job/datadog/job/master/[ci.jenkins.io]
 
 ==== Public Dashboard
 
 * link:https://p.datadoghq.com/sb/0Igb9a-a5fcf385fd798d5eebcab7b52f5747df[Confluence]
-* link:https://p.datadoghq.com/sb/0Igb9a-e3831323722f931efe38cb02026d1974[Confluence & Jira Load]
+* link:https://p.datadoghq.com/sb/0Igb9a-e3831323722f931efe38cb02026d1974[Confluence Load]
 * link:https://p.datadoghq.com/sb/0Igb9a-fcf64e96ade0909af164628af8d9643b[Incidents]
 
 == Downtime
