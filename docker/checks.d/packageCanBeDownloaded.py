@@ -85,7 +85,7 @@ class PackageCanBeDownloaded(AgentCheck):
 
         except URLError as err:
             self.warning("Something went wrong while retrieving weekly version: {}"
-                          .format(err))
+                         .format(err))
 
     def get_latest_stable_version(self):
         '''
