@@ -9,10 +9,6 @@ instances:
       min_collection_interval: 60
     - package: opensuse-stable
       min_collection_interval: 60
-    - package: osx
-      min_collection_interval: 60
-    - package: osx-stable
-      min_collection_interval: 60
     - package: redhat
       min_collection_interval: 60
     - package: redhat-stable

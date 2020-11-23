@@ -127,7 +127,7 @@ class PackageCanBeDownloaded(AgentCheck):
             'windows': 'https://{}/windows/{}/jenkins.msi'
                       .format(self.hostname, weekly_version),
             'war': 'https://{}/war/{}/jenkins.war'
-                      .format(p.hostname, weekly_version),
+                      .format(self.hostname, weekly_version),
             'debian-stable': 'https://{}/debian-stable/jenkins_{}_all.deb'
                       .format(self.hostname, stable_version),
             'redhat-stable': 'https://{}/redhat-stable/jenkins-{}-1.1.noarch.rpm'
@@ -137,7 +137,7 @@ class PackageCanBeDownloaded(AgentCheck):
             'opensuse-stable': 'https://{}/opensuse-stable/jenkins-{}-1.2.noarch.rpm'
                       .format(self.hostname, stable_version),
             'war-stable': 'https://{}/war-stable/{}/jenkins.war'
-                      .format(p.hostname, stable_version),
+                      .format(self.hostname, stable_version),
         }
 
         metric = 'jenkins.package.available'
