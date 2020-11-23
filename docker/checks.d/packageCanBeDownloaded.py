@@ -162,8 +162,8 @@ if __name__ == "__main__":
     '''
     p = PackageCanBeDownloaded
 
-    weekly_version = p.get_latest_weekly_version()
-    stable_version = p.get_latest_stable_version()
+    weekly_version = p.get_latest_weekly_version(p)
+    stable_version = p.get_latest_stable_version(p)
     hostname = "get.jenkins.io"
 
     endpoints = {
