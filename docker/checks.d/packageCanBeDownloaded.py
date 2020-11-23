@@ -72,7 +72,6 @@ class PackageCanBeDownloaded(AgentCheck):
        can be downloaded
     '''
     metadataUrl = 'https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml'
-    hostname = "get.jenkins.io"
 
     def get_latest_weekly_version(self):
         '''
@@ -85,8 +84,8 @@ class PackageCanBeDownloaded(AgentCheck):
             return root.find('versioning/latest').text
 
         except URLError as err:
-            print('Something went wrong while retrieving weekly version: {}'
-                  .format(err))
+            self.warning("Something went wrong while retrieving weekly version: {}"
+                          .format(err))
 
     def get_latest_stable_version(self):
         '''
@@ -107,8 +106,8 @@ class PackageCanBeDownloaded(AgentCheck):
             return get_latest_version(stable_version)
 
         except URLError as err:
-            print('Something went wrong while retrieving stable version: {}'
-                  .format(err))
+            self.warning("Something went wrong while retrieving stable version: {}"
+                         .format(err))
 
     def check(self, instance):
         '''
@@ -117,27 +116,30 @@ class PackageCanBeDownloaded(AgentCheck):
 
         weekly_version = self.get_latest_weekly_version()
         stable_version = self.get_latest_stable_version()
+
+        hostname = "get.jenkins.io"
+
         endpoints = {
             'debian': 'https://{}/debian/jenkins_{}_all.deb'
-                      .format(self.hostname, weekly_version),
+                      .format(hostname, weekly_version),
             'redhat': 'https://{}/redhat/jenkins-{}-1.1.noarch.rpm'
-                      .format(self.hostname, weekly_version),
+                      .format(hostname, weekly_version),
             'opensuse': 'https://{}/opensuse/jenkins-{}-1.2.noarch.rpm'
-                      .format(self.hostname, weekly_version),
+                      .format(hostname, weekly_version),
             'windows': 'https://{}/windows/{}/jenkins.msi'
-                      .format(self.hostname, weekly_version),
+                      .format(hostname, weekly_version),
             'war': 'https://{}/war/{}/jenkins.war'
-                      .format(self.hostname, weekly_version),
+                      .format(hostname, weekly_version),
             'debian-stable': 'https://{}/debian-stable/jenkins_{}_all.deb'
-                      .format(self.hostname, stable_version),
+                      .format(hostname, stable_version),
             'redhat-stable': 'https://{}/redhat-stable/jenkins-{}-1.1.noarch.rpm'
-                      .format(self.hostname, stable_version),
+                      .format(hostname, stable_version),
             'windows-stable': 'https://{}/windows-stable/{}/jenkins.msi'
-                      .format(self.hostname, stable_version),
+                      .format(hostname, stable_version),
             'opensuse-stable': 'https://{}/opensuse-stable/jenkins-{}-1.2.noarch.rpm'
-                      .format(self.hostname, stable_version),
+                      .format(hostname, stable_version),
             'war-stable': 'https://{}/war-stable/{}/jenkins.war'
-                      .format(self.hostname, stable_version),
+                      .format(hostname, stable_version),
         }
 
         metric = 'jenkins.package.available'
@@ -159,29 +161,32 @@ if __name__ == "__main__":
         Only there for testing purposes
     '''
     p = PackageCanBeDownloaded
-    weekly_version = p.get_latest_weekly_version(p)
-    stable_version = p.get_latest_stable_version(p)
+
+    weekly_version = p.get_latest_weekly_version()
+    stable_version = p.get_latest_stable_version()
+    hostname = "get.jenkins.io"
+
     endpoints = {
         'debian': 'https://{}/debian/jenkins_{}_all.deb'
-                  .format(p.hostname, weekly_version),
+                  .format(hostname, weekly_version),
         'redhat': 'https://{}/redhat/jenkins-{}-1.1.noarch.rpm'
-                  .format(p.hostname, weekly_version),
+                  .format(hostname, weekly_version),
         'opensuse': 'https://{}/opensuse/jenkins-{}-1.2.noarch.rpm'
-                  .format(p.hostname, weekly_version),
+                  .format(hostname, weekly_version),
         'war': 'https://{}/war/{}/jenkins.war'
-                  .format(p.hostname, weekly_version),
+                  .format(hostname, weekly_version),
         'windows': 'https://{}/windows/{}/jenkins.msi'
-                  .format(p.hostname, weekly_version),
+                  .format(hostname, weekly_version),
         'debian-stable': 'https://{}/debian-stable/jenkins_{}_all.deb'
-                  .format(p.hostname, stable_version),
+                  .format(hostname, stable_version),
         'redhat-stable': 'https://{}/redhat-stable/jenkins-{}-1.1.noarch.rpm'
-                  .format(p.hostname, stable_version),
+                  .format(hostname, stable_version),
         'windows-stable': 'https://{}/windows-stable/{}/jenkins.msi'
-                  .format(p.hostname, stable_version),
+                  .format(hostname, stable_version),
         'opensuse-stable': 'https://{}/opensuse-stable/jenkins-{}-1.2.noarch.rpm'
-                  .format(p.hostname, stable_version),
+                  .format(hostname, stable_version),
         'war-stable': 'https://{}/war-stable/{}/jenkins.war'
-                  .format(p.hostname, stable_version),
+                  .format(hostname, stable_version),
     }
 
     print("Latest weekly version: {}".format(weekly_version))
@@ -191,8 +196,8 @@ if __name__ == "__main__":
         "debian", "debian-stable",
         "redhat", "redhat-stable",
         "opensuse", "opensuse-stable",
-        "windows", "windows-stable",
         "war", "war-stable",
+        "windows", "windows-stable",
     ]
 
     for package in packages:
