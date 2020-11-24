@@ -20,25 +20,6 @@ pipeline {
 
 
   stages {
-    stage('Build Datadog Docker Image'){
-      steps {
-        sh 'make build.docker'
-      }
-    }
-    stage('Test Datadog Docker Image'){
-      steps {
-        sh 'make test.docker'
-      }
-    }
-    stage('Publish Datadog Docker Image'){
-      when {
-        branch 'master'
-        environment name: 'JENKINS_URL', value: 'https://trusted.ci.jenkins.io:1443/'
-      }
-      steps {
-        sh 'make publish.docker'
-      }
-    }
     // Only on non master branch, "Test Full Apply" ensures that we can always configure everything from scratch
     stage('Test: Apply From Zero') {
       when {
