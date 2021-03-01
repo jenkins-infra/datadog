@@ -169,7 +169,7 @@ resource "datadog_monitor" "ssl_certificate_expiration" {
 SSL certificate expiring soon for {{url}}, you should take a looksee. @oncall @pagerduty
 EOT
 
-  query = "max(last_15m):min:http.ssl.days_left{*} by {url} <= 5"
+  query = "max(last_15m):min:http.ssl.days_left{production} by {url} <= 5"
 
   notify_audit        = false
   timeout_h           = 0
@@ -200,7 +200,7 @@ resource "datadog_monitor" "weird_response_time" {
 @oncall @pagerduty
 EOT
 
-  query = "avg(last_5m):max:network.http.response_time{*} by {url} > 5"
+  query = "avg(last_5m):max:network.http.response_time{production} by {url} > 5"
 
   notify_audit        = false
   timeout_h           = 0
@@ -225,7 +225,7 @@ resource "datadog_monitor" "service_unreachable" {
   type               = "service check"
   message            = "@oncall"
 
-  query = "\"http.can_connect\".over(\"*\").exclude(\"instance:repo.azure.jenkins.io\",\"instance:evergreen.jenkins.io\").last(4).count_by_status()"
+  query = "\"http.can_connect\".over(\"production\").exclude(\"instance:repo.azure.jenkins.io\",\"instance:evergreen.jenkins.io\").last(4).count_by_status()"
 
   notify_audit        = false
   timeout_h           = 0
