@@ -1,32 +1,22 @@
-TERRAFORM=./scripts/terraform
-PLAN=terraform-plan.out
+TERRAFORM_BIN ?= terraform
+PLAN ?= terraform-plan.out
 
 apply:
-	$(TERRAFORM) apply -auto-approve=true $(PLAN)
-
-build.docker:
-	$(MAKE) -C docker build
-
-test.docker:
-	cd docker && $(MAKE) check
-
-publish.docker:
-	$(MAKE) -C docker publish
+	$(TERRAFORM_BIN) apply -auto-approve=true $(PLAN)
 
 clean:
 	rm -f ${PLAN}
 	rm -Rf .terraform/
 
 destroy:
-	$(TERRAFORM) destroy -auto-approve=true plans
+	$(TERRAFORM_BIN) destroy -auto-approve=true plans
 
-
-# Read init variable from credentials
 init: clean
+# Read init variable from credentials: for dev usage. Ask the jenkins-infra team for these credentials
 	if [ -f 'credentials' ]; then\
-		. './credentials' ;\
+		source ./credentials ;\
 	fi; \
-	$(TERRAFORM) init \
+	$(TERRAFORM_BIN) init \
 		-backend-config="storage_account_name=$$TF_BACKEND_STORAGE_ACCOUNT_NAME" \
 		-backend-config="container_name=$$TF_BACKEND_CONTAINER_NAME" \
 		-backend-config="key=$$TF_BACKEND_CONTAINER_FILE" \
@@ -38,16 +28,16 @@ init-local: clean
 	if [ -f './plans/backend.tf' ]; then\
 		rm ./plans/backend.tf ;\
 	fi; \
-	$(TERRAFORM) init plans
+	$(TERRAFORM_BIN) init plans
 
 plan: refresh
-	$(TERRAFORM) plan -out=$(PLAN) plans
+	$(TERRAFORM_BIN) plan -out=$(PLAN) plans
 
 refresh:
-	$(TERRAFORM) refresh plans
+	$(TERRAFORM_BIN) refresh plans
 
 validate:
-	$(TERRAFORM) validate plans
+	$(TERRAFORM_BIN) validate plans
 
 
 .PHONY: apply clean destroy init init-local plan refresh validate
