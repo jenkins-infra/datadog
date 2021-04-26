@@ -1,18 +1,16 @@
 resource "datadog_synthetics_test" "wikijenkinsio" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://wiki.jenkins.io/status"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "200"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "wiki.jenkins.io"
@@ -30,23 +28,21 @@ resource "datadog_synthetics_test" "wikijenkinsio" {
 
 resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://wiki.jenkins-ci.org/status"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "301"
-    },
-    {
-      type     = "header"
-      operator = "is"
-      target   = "location: https://wiki.jenkins.io/status"
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "301"
+  }
+  assertion {
+    type     = "header"
+    operator = "is"
+    target   = "location: https://wiki.jenkins.io/status"
 
-    }
-  ]
+  }
   locations = ["aws:eu-central-1"]
   # Can't work at the moment according datadog message
   # Synthetics is only available for the Datadog US site.
@@ -58,7 +54,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   #   "aws:ap-northeast-1",
   #   "aws:ap-southeast-2"
   # ]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "wiki.jenkins-ci.org"

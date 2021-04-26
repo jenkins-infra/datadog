@@ -1,18 +1,16 @@
 resource "datadog_synthetics_test" "jenkinsio" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://jenkins.io"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "200"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "jenkins.io"

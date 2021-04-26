@@ -1,18 +1,16 @@
 resource "datadog_synthetics_test" "pkg_jenkins_io" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://pkg.origin.jenkins.io"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "200"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "pkg.origin.jenkins.io"
@@ -35,19 +33,17 @@ resource "datadog_synthetics_test" "pkg_jenkins_io" {
 ## Do not monitor https
 resource "datadog_synthetics_test" "pkg_jenkinsci_org" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "http://pkg.jenkins-ci.org"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "200"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "pkg.jenkins-ci.org"

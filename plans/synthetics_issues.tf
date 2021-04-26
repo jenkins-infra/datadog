@@ -1,18 +1,16 @@
 resource "datadog_synthetics_test" "issuesjenkinsio" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://issues.jenkins.io/status"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "200"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "issues.jenkins.io"
@@ -30,24 +28,22 @@ resource "datadog_synthetics_test" "issuesjenkinsio" {
 
 resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   type = "browser"
-  request {
+  request_definition {
     method = "GET"
     url    = "https://issues.jenkins-ci.org/status"
   }
-  assertions = [
-    {
-      type     = "statusCode"
-      operator = "is"
-      target   = "301"
-    },
-    {
-      type     = "header"
-      operator = "is"
-      target   = "location: https://issues.jenkins.io/"
-    }
-  ]
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "301"
+  }
+  assertion {
+    type     = "header"
+    operator = "is"
+    target   = "location: https://issues.jenkins.io/"
+  }
   locations = ["aws:eu-central-1"]
-  options {
+  options_list {
     tick_every = 900
   }
   name    = "issues.jenkins-ci.org"

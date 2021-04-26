@@ -11,11 +11,10 @@ resource "datadog_monitor" "distribution_package_can_be_downloaded" {
   new_host_delay      = 300
   require_full_window = false
 
-  thresholds {
+  monitor_thresholds {
     critical          = 0
     critical_recovery = 0.1
   }
 
   tags = ["terraformed:true", "*"]
 }
-

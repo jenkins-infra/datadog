@@ -13,7 +13,7 @@ resource "datadog_monitor" "account_app_slow" {
   timeout_h           = 0
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 1
   }
 
@@ -36,7 +36,7 @@ resource "datadog_monitor" "confluence_choking" {
   new_host_delay      = 300
   renotify_interval   = 0
 
-  thresholds {
+  monitor_thresholds {
     critical = 300
     warning  = 250
   }
@@ -58,7 +58,7 @@ resource "datadog_monitor" "confluence_down" {
   timeout_h         = 0
   renotify_interval = 0
 
-  thresholds {
+  monitor_thresholds {
     critical = 5
     warning  = 3
     ok       = 1
@@ -99,7 +99,7 @@ resource "datadog_monitor" "disk_space" {
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 1073741824
   }
 
@@ -127,7 +127,7 @@ EOT
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 0.5
     warning  = 0.2
   }
@@ -154,7 +154,7 @@ EOT
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 12
     warning  = 6
   }
@@ -181,7 +181,7 @@ EOT
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 5
     warning  = 10
   }
@@ -212,7 +212,7 @@ EOT
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 5
     warning  = 3
   }
@@ -237,7 +237,7 @@ resource "datadog_monitor" "service_unreachable" {
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 3
     warning  = 2
   }
@@ -260,7 +260,7 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
   new_host_delay      = 300
   require_full_window = true
 
-  thresholds {
+  monitor_thresholds {
     critical = 150
     warning  = 100
   }
