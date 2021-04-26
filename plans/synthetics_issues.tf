@@ -2,22 +2,22 @@ resource "datadog_synthetics_test" "issuesjenkinsio" {
   type = "browser"
   request {
     method = "GET"
-    url = "https://issues.jenkins.io/status"
+    url    = "https://issues.jenkins.io/status"
   }
   assertions = [
     {
-      type = "statusCode"
+      type     = "statusCode"
       operator = "is"
-      target = "200"
+      target   = "200"
     }
   ]
-  locations = [ "aws:eu-central-1" ]
+  locations = ["aws:eu-central-1"]
   options {
     tick_every = 900
   }
-  name = "issues.jenkins.io"
+  name    = "issues.jenkins.io"
   message = "Notify @pagerduty"
-  tags = ["production", "jenkins.io"]
+  tags    = ["production", "jenkins.io"]
 
   device_ids = [
     "laptop_large",
@@ -32,27 +32,27 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   type = "browser"
   request {
     method = "GET"
-    url = "https://issues.jenkins-ci.org/status"
+    url    = "https://issues.jenkins-ci.org/status"
   }
   assertions = [
     {
-      type = "statusCode"
+      type     = "statusCode"
       operator = "is"
-      target = "301"
+      target   = "301"
     },
     {
-      type = "header"
+      type     = "header"
       operator = "is"
-      target = "location: https://issues.jenkins.io/"
+      target   = "location: https://issues.jenkins.io/"
     }
   ]
-  locations = [ "aws:eu-central-1" ]
+  locations = ["aws:eu-central-1"]
   options {
     tick_every = 900
   }
-  name = "issues.jenkins-ci.org"
+  name    = "issues.jenkins-ci.org"
   message = "Notify @pagerduty"
-  tags = ["production", "jenkins-ci.org"]
+  tags    = ["production", "jenkins-ci.org"]
 
   device_ids = [
     "laptop_large",

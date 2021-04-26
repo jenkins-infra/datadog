@@ -1,7 +1,7 @@
 resource "datadog_monitor" "account_app_slow" {
-  name               = "Account app is slow"
-  type               = "metric alert"
-  message            = "@all @pagerduty Account App is slow"
+  name    = "Account app is slow"
+  type    = "metric alert"
+  message = "@all @pagerduty Account App is slow"
 
   query = "avg(last_5m):avg:network.http.response_time{url:https://accounts.jenkins.io/} > 1"
 
@@ -14,16 +14,16 @@ resource "datadog_monitor" "account_app_slow" {
   require_full_window = true
 
   thresholds {
-      critical = 1
+    critical = 1
   }
 
   tags = ["terraformed:true", "service:account-app"]
 }
 
 resource "datadog_monitor" "confluence_choking" {
-  name               = "Confluence is choking"
-  type               = "metric alert"
-  message            = "@all @pagerduty confluence is choking"
+  name    = "Confluence is choking"
+  type    = "metric alert"
+  message = "@all @pagerduty confluence is choking"
 
   query = "min(last_1m):avg:apache.performance.busy_workers{host:lettuce} > 300"
 
@@ -37,8 +37,8 @@ resource "datadog_monitor" "confluence_choking" {
   renotify_interval   = 0
 
   thresholds {
-      critical = 300
-      warning = 250
+    critical = 300
+    warning  = 250
   }
 
   tags = ["terraformed:true", "service:confluence"]
@@ -46,47 +46,47 @@ resource "datadog_monitor" "confluence_choking" {
 
 
 resource "datadog_monitor" "confluence_down" {
-  name               = "Confluence is down"
-  type               = "service check"
-  message            = "@all @pagerduty Confluence is down"
+  name    = "Confluence is down"
+  type    = "service check"
+  message = "@all @pagerduty Confluence is down"
 
   query = "\"process.up\".over(\"host:lettuce\",\"process:confluence\").last(6).count_by_status()"
 
-  notify_no_data      = true
-  no_data_timeframe   = 5
-  notify_audit        = false
-  timeout_h           = 0
-  renotify_interval   = 0
+  notify_no_data    = true
+  no_data_timeframe = 5
+  notify_audit      = false
+  timeout_h         = 0
+  renotify_interval = 0
 
   thresholds {
-      critical = 5
-      warning  = 3
-      ok       = 1
+    critical = 5
+    warning  = 3
+    ok       = 1
   }
 
   tags = ["terraformed:true", "service:confluence"]
 }
 
 resource "datadog_monitor" "confluence_slow" {
-  name               = "Confluence is slow"
-  type               = "metric alert"
-  message            = "@all @pagerduty Confluence is slow"
+  name    = "Confluence is slow"
+  type    = "metric alert"
+  message = "@all @pagerduty Confluence is slow"
 
   query = "avg(last_5m):avg:network.http.response_time{host:lettuce,url:https://wiki.jenkins-ci.org/display/jenkins/git_plugin} > 3"
 
-  notify_no_data      = true
-  no_data_timeframe   = 20
-  notify_audit        = false
-  timeout_h           = 0
-  renotify_interval   = 0
+  notify_no_data    = true
+  no_data_timeframe = 20
+  notify_audit      = false
+  timeout_h         = 0
+  renotify_interval = 0
 
   tags = ["terraformed:true", "service:confluence"]
 }
 
 resource "datadog_monitor" "disk_space" {
-  name               = "Disk space is below 1GB free {{host.name}}"
-  type               = "query alert"
-  message            = "@pagerduty"
+  name    = "Disk space is below 1GB free {{host.name}}"
+  type    = "query alert"
+  message = "@pagerduty"
 
   query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!device:/dev/sda15} by {host,device} < 1073741824"
 
@@ -100,16 +100,16 @@ resource "datadog_monitor" "disk_space" {
   require_full_window = true
 
   thresholds {
-      critical = 1073741824
+    critical = 1073741824
   }
 
   tags = ["terraformed:true", "*"]
 }
 
 resource "datadog_monitor" "jenkins_dns" {
-  name               = "Jenkins DNS may be broken, non-responsive"
-  type               = "metric alert"
-  message            = <<EOT
+  name    = "Jenkins DNS may be broken, non-responsive"
+  type    = "metric alert"
+  message = <<EOT
 It is taking too long or the data is simply unavailable from one or more of our DNS servers.
 Consult the [bind runbook](https://github.com/jenkins-infra/runbooks/tree/master/bind) for corrective actions
 @pagerduty @oncall
@@ -128,17 +128,17 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 0.5
-      warning  = 0.2
+    critical = 0.5
+    warning  = 0.2
   }
 
   tags = ["terraformed:true", "service:jenkins-dns"]
 }
 
 resource "datadog_monitor" "plugin_site_index_age" {
-  name               = "PluginSite Index age"
-  type               = "metric alert"
-  message            = <<EOT
+  name    = "PluginSite Index age"
+  type    = "metric alert"
+  message = <<EOT
 {{#is_alert}} {{ site.name }} index is too old {{/is_alert}}. @pagerduty
 EOT
 
@@ -155,17 +155,17 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 12
-      warning  = 6
+    critical = 12
+    warning  = 6
   }
 
   tags = ["terraformed:true", "service:plugin-site", "*"]
 }
 
 resource "datadog_monitor" "ssl_certificate_expiration" {
-  name               = "SSL certificate expiring soon for {{url}}"
-  type               = "metric alert"
-  message            = <<EOT
+  name    = "SSL certificate expiring soon for {{url}}"
+  type    = "metric alert"
+  message = <<EOT
 SSL certificate expiring soon for {{url}}, you should take a looksee. @oncall @pagerduty
 EOT
 
@@ -182,17 +182,17 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 5
-      warning  = 10
+    critical = 5
+    warning  = 10
   }
 
   tags = ["terraformed:true", "*"]
 }
 
 resource "datadog_monitor" "weird_response_time" {
-  name               = "Weird Response time {{url}}"
-  type               = "metric alert"
-  message            = <<EOT
+  name    = "Weird Response time {{url}}"
+  type    = "metric alert"
+  message = <<EOT
 {{#is_alert}}{{url.name}} response time is bigger than {{threshold}} seconds  {{/is_alert}}
 {{#is_alert_to_warning}}{{url.name}} response time is bigger than {{warn_threshold}} seconds {{/is_alert_to_warning}}
 {{#is_alert_recovery}}{{url.name}} response time is back to normal{{/is_alert_recovery}}
@@ -213,17 +213,17 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 5
-      warning  = 3
+    critical = 5
+    warning  = 3
   }
 
   tags = ["terraformed:true", "*"]
 }
 
 resource "datadog_monitor" "service_unreachable" {
-  name               = "{{url.name}} is unreachable"
-  type               = "service check"
-  message            = "@oncall"
+  name    = "{{url.name}} is unreachable"
+  type    = "service check"
+  message = "@oncall"
 
   query = "\"http.can_connect\".over(\"production\").exclude(\"instance:repo.azure.jenkins.io\",\"instance:evergreen.jenkins.io\").last(4).count_by_status()"
 
@@ -238,18 +238,18 @@ resource "datadog_monitor" "service_unreachable" {
   require_full_window = true
 
   thresholds {
-      critical = 3
-      warning  = 2
+    critical = 3
+    warning  = 2
   }
 
   tags = ["terraformed:true", "*"]
 }
 
 resource "datadog_monitor" "jenkins_buildqueue_size" {
-  name               = "Huge Job Queue on {{host.name}}"
-  type               = "metric alert"
-  message            = "{{#is_alert}} Please forward the alert in #jenkins-infra regardless if you can('t) address this issue.\n\nTo fix look a the following steps:\n\n1. Is there any disk space issues on {{ host.name }}\n2. Does your linux or windows virtual machines correctly provisioned?\n3. Does your aci containers instances correctly provisioned?\n\nDon't hesitate to ask help to someone [here](https://github.com/jenkins-infra/runbooks#contact)\n\n{{/is_alert}}\n\n{{#is_recovery}} Job Queue size is back to normal {{/is_recovery}}\n @pagerduty"
-  query = "avg(last_5m):max:jenkins.queue.size{*} > 150"
+  name    = "Huge Job Queue on {{host.name}}"
+  type    = "metric alert"
+  message = "{{#is_alert}} Please forward the alert in #jenkins-infra regardless if you can('t) address this issue.\n\nTo fix look a the following steps:\n\n1. Is there any disk space issues on {{ host.name }}\n2. Does your linux or windows virtual machines correctly provisioned?\n3. Does your aci containers instances correctly provisioned?\n\nDon't hesitate to ask help to someone [here](https://github.com/jenkins-infra/runbooks#contact)\n\n{{/is_alert}}\n\n{{#is_recovery}} Job Queue size is back to normal {{/is_recovery}}\n @pagerduty"
+  query   = "avg(last_5m):max:jenkins.queue.size{*} > 150"
 
   notify_audit        = false
   timeout_h           = 0
@@ -261,8 +261,8 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
   require_full_window = true
 
   thresholds {
-      critical = 150
-      warning  = 100
+    critical = 150
+    warning  = 100
   }
 
   tags = ["terraformed:true", "*"]

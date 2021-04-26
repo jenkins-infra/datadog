@@ -2,20 +2,20 @@ resource "datadog_synthetics_test" "mirrors_jenkins_io" {
   type = "browser"
   request {
     method = "GET"
-    url = "http://mirrors.jenkins.io"
+    url    = "http://mirrors.jenkins.io"
   }
   assertions = [
     {
-      type = "statusCode"
+      type     = "statusCode"
       operator = "is"
-      target = "200"
+      target   = "200"
     }
   ]
-  locations = [ "aws:eu-central-1" ]
+  locations = ["aws:eu-central-1"]
   options {
     tick_every = 900
   }
-  name = "mirrors.jenkins.io"
+  name    = "mirrors.jenkins.io"
   message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
@@ -36,20 +36,20 @@ resource "datadog_synthetics_test" "mirrors_jenkinsci_org" {
   type = "browser"
   request {
     method = "GET"
-    url = "https://mirrors.jenkins-ci.org"
+    url    = "https://mirrors.jenkins-ci.org"
   }
   assertions = [
     {
-      type = "statusCode"
+      type     = "statusCode"
       operator = "is"
-      target = "200"
+      target   = "200"
     }
   ]
-  locations = [ "aws:eu-central-1" ]
+  locations = ["aws:eu-central-1"]
   options {
     tick_every = 900
   }
-  name = "mirrors.jenkins-ci.org"
+  name    = "mirrors.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags = [
     "jenkins-ci.org",
