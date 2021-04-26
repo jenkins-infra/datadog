@@ -30,7 +30,6 @@ pipeline {
     stage('Plan') {
       steps {
         sh '''
-        apk add --no-cache coreutils make
         make init
         make plan
         '''

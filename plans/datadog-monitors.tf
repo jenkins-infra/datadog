@@ -37,7 +37,7 @@ resource "datadog_monitor" "confluence_choking" {
   renotify_interval   = 0
 
   thresholds {
-      critical = 300,
+      critical = 300
       warning = 250
   }
 
@@ -59,8 +59,8 @@ resource "datadog_monitor" "confluence_down" {
   renotify_interval   = 0
 
   thresholds {
-      critical = 5,
-      warning  = 3,
+      critical = 5
+      warning  = 3
       ok       = 1
   }
 
@@ -128,7 +128,7 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 0.5,
+      critical = 0.5
       warning  = 0.2
   }
 
@@ -155,7 +155,7 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 12,
+      critical = 12
       warning  = 6
   }
 
@@ -182,7 +182,7 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 5,
+      critical = 5
       warning  = 10
   }
 
@@ -213,7 +213,7 @@ EOT
   require_full_window = true
 
   thresholds {
-      critical = 5,
+      critical = 5
       warning  = 3
   }
 
@@ -238,7 +238,7 @@ resource "datadog_monitor" "service_unreachable" {
   require_full_window = true
 
   thresholds {
-      critical = 3,
+      critical = 3
       warning  = 2
   }
 
@@ -261,7 +261,7 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
   require_full_window = true
 
   thresholds {
-      critical = 150,
+      critical = 150
       warning  = 100
   }
 
