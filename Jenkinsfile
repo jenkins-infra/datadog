@@ -33,7 +33,6 @@ pipeline {
         make init
         make plan
         '''
-        stash name: 'terraform-plan', includes: env.PLAN
       }
     }
     stage('Apply') {
@@ -41,11 +40,7 @@ pipeline {
         branch 'main'
       }
       steps {
-        unstash 'terraform-plan'
-        sh '''
-        make init
-        make apply
-        '''
+        sh 'make apply'
       }
     }
   }
