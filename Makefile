@@ -1,17 +1,30 @@
 TERRAFORM_BIN ?= terraform
 PLAN ?= terraform-plan.out
 
-apply:
-	$(TERRAFORM_BIN) apply -auto-approve=true $(PLAN)
+all: clean plan apply
 
 clean:
-	rm -f ${PLAN}
-	rm -Rf .terraform/
+	rm -Rf .terraform/ $(PLAN)
+
+init: .terraform/plugins/selections.json
+
+validate: .terraform/plugins/selections.json
+	terraform fmt -recursive -check
+	$(TERRAFORM_BIN) validate plans
+	tfsec --exclude-downloaded-modules
+
+plan: .terraform/plugins/selections.json
+	$(TERRAFORM_BIN) plan -out=$(PLAN) plans
+
+apply: .terraform/plugins/selections.json
+	$(TERRAFORM_BIN) apply -auto-approve=true $(PLAN)
 
 destroy:
 	$(TERRAFORM_BIN) destroy -auto-approve=true plans
 
-init: clean
+.PHONY: apply clean destroy init plan validate
+
+.terraform/plugins/selections.json:
 # Read init variable from credentials: for dev usage. Ask the jenkins-infra team for these credentials
 	if [ -f 'credentials' ]; then\
 		source ./credentials ;\
@@ -23,21 +36,3 @@ init: clean
 		-backend-config="access_key=$$TF_BACKEND_STORAGE_ACCOUNT_KEY" \
 		-force-copy \
 		plans
-
-init-local: clean
-	if [ -f './plans/backend.tf' ]; then\
-		rm ./plans/backend.tf ;\
-	fi; \
-	$(TERRAFORM_BIN) init plans
-
-plan: refresh
-	$(TERRAFORM_BIN) plan -out=$(PLAN) plans
-
-refresh:
-	$(TERRAFORM_BIN) refresh plans
-
-validate:
-	$(TERRAFORM_BIN) validate plans
-
-
-.PHONY: apply clean destroy init init-local plan refresh validate
