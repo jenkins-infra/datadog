@@ -15,12 +15,12 @@ pipeline {
   }
 
   environment {
-    TF_VAR_datadog_api_key          = credentials('jenkins-prod-dd-api-key')
-    TF_VAR_datadog_app_key          = credentials('jenkins-prod-dd-app-key')
+    TF_VAR_datadog_api_key          = credentials('datadog-api-key')
+    TF_VAR_datadog_app_key          = credentials('datadog-app-key')
     TF_BACKEND_CONTAINER_NAME       = 'tfstatedatadog'
     TF_BACKEND_CONTAINER_FILE       = 'master-terraform.tfstate' // Keep master
     TF_BACKEND_STORAGE_ACCOUNT_NAME = 'prodtfstatedatadog'
-    TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('datadog-storage-account-key')
+    TF_BACKEND_STORAGE_ACCOUNT_KEY  = credentials('terraform-datadog-azure-backend-account-key')
     TF_INPUT                        = false
     TF_IN_AUTOMATION                = true
     PLAN                            = 'terraform-plan.out'
