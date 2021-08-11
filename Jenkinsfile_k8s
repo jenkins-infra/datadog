@@ -27,20 +27,38 @@ pipeline {
   }
 
   stages {
-    stage('Plan') {
-      steps {
-        sh '''
-        make init
-        make plan
-        '''
-      }
-    }
-    stage('Apply') {
-      when {
-        branch 'main'
-      }
-      steps {
-        sh 'make apply'
+    stage('Terraform') {
+      parallel {
+        stage('Production') {
+          stage('Plan') {
+            steps {
+              sh '''
+              make init
+              make plan
+              '''
+            }
+          }
+          stage('Apply') {
+            when {
+              branch 'main'
+            }
+            steps {
+              sh 'make apply'
+            }
+          }
+        }
+        stage('UpdateCLI') {
+          steps {
+            script {
+              withCredentials([string(credentialsId: 'updatecli-github-token', variable: 'UPDATECLI_GITHUB_TOKEN')]) {
+                updatecli(action: 'diff')
+                if (env.BRANCH_NAME == 'main') {
+                  updatecli(action: 'apply', cronTriggerExpression: '@daily')
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
