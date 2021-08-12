@@ -1,4 +1,5 @@
 TERRAFORM_BIN ?= terraform
+TERRAFORM_GLOBAL_OPTS ?= -chdir=./plans
 PLAN ?= terraform-plan.out
 
 all: clean plan apply
@@ -9,18 +10,18 @@ clean:
 init: .terraform/plugins/selections.json
 
 validate: .terraform/plugins/selections.json
-	terraform fmt -recursive -check
-	$(TERRAFORM_BIN) validate plans
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) fmt -recursive -check
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) validate
 	tfsec --exclude-downloaded-modules
 
 plan: .terraform/plugins/selections.json
-	$(TERRAFORM_BIN) plan -out=$(PLAN) plans
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) plan -out=$(PLAN)
 
 apply: .terraform/plugins/selections.json
-	$(TERRAFORM_BIN) apply -auto-approve=true $(PLAN)
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) apply -auto-approve=true $(PLAN)
 
 destroy:
-	$(TERRAFORM_BIN) destroy -auto-approve=true plans
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) destroy -auto-approve=true
 
 .PHONY: apply clean destroy init plan validate
 
@@ -29,10 +30,9 @@ destroy:
 	if [ -f 'credentials' ]; then\
 		source ./credentials ;\
 	fi; \
-	$(TERRAFORM_BIN) init \
+	$(TERRAFORM_BIN) $(TERRAFORM_GLOBAL_OPTS) init \
 		-backend-config="storage_account_name=$$TF_BACKEND_STORAGE_ACCOUNT_NAME" \
 		-backend-config="container_name=$$TF_BACKEND_CONTAINER_NAME" \
 		-backend-config="key=$$TF_BACKEND_CONTAINER_FILE" \
 		-backend-config="access_key=$$TF_BACKEND_STORAGE_ACCOUNT_KEY" \
-		-force-copy \
-		plans
+		-force-copy
