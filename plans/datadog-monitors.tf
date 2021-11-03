@@ -20,69 +20,6 @@ resource "datadog_monitor" "account_app_slow" {
   tags = ["terraformed:true", "service:account-app"]
 }
 
-resource "datadog_monitor" "confluence_choking" {
-  name    = "Confluence is choking"
-  type    = "metric alert"
-  message = "@all @pagerduty confluence is choking"
-
-  query = "min(last_1m):avg:apache.performance.busy_workers{host:lettuce} > 300"
-
-  notify_no_data      = false
-  no_data_timeframe   = 2
-  notify_audit        = false
-  locked              = false
-  timeout_h           = 0
-  require_full_window = true
-  new_host_delay      = 300
-  renotify_interval   = 0
-
-  monitor_thresholds {
-    critical = 300
-    warning  = 250
-  }
-
-  tags = ["terraformed:true", "service:confluence"]
-}
-
-
-resource "datadog_monitor" "confluence_down" {
-  name    = "Confluence is down"
-  type    = "service check"
-  message = "@all @pagerduty Confluence is down"
-
-  query = "\"process.up\".over(\"host:lettuce\",\"process:confluence\").last(6).count_by_status()"
-
-  notify_no_data    = true
-  no_data_timeframe = 5
-  notify_audit      = false
-  timeout_h         = 0
-  renotify_interval = 0
-
-  monitor_thresholds {
-    critical = 5
-    warning  = 3
-    ok       = 1
-  }
-
-  tags = ["terraformed:true", "service:confluence"]
-}
-
-resource "datadog_monitor" "confluence_slow" {
-  name    = "Confluence is slow"
-  type    = "metric alert"
-  message = "@all @pagerduty Confluence is slow"
-
-  query = "avg(last_5m):avg:network.http.response_time{host:lettuce,url:https://wiki.jenkins-ci.org/display/jenkins/git_plugin} > 3"
-
-  notify_no_data    = true
-  no_data_timeframe = 20
-  notify_audit      = false
-  timeout_h         = 0
-  renotify_interval = 0
-
-  tags = ["terraformed:true", "service:confluence"]
-}
-
 resource "datadog_monitor" "disk_space" {
   name    = "Disk space is below 1GB free {{host.name}}"
   type    = "query alert"
