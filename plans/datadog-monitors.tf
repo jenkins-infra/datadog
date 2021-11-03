@@ -33,7 +33,7 @@ resource "datadog_monitor" "disk_space" {
   notify_audit        = false
   timeout_h           = 0
   renotify_interval   = 0
-  new_host_delay      = 300
+  new_group_delay     = 300
   require_full_window = true
 
   monitor_thresholds {
@@ -61,7 +61,6 @@ EOT
   notify_no_data      = true
   no_data_timeframe   = 2
   renotify_interval   = 10
-  new_host_delay      = 300
   require_full_window = true
 
   monitor_thresholds {
@@ -88,7 +87,7 @@ EOT
   notify_no_data      = true
   no_data_timeframe   = 10
   renotify_interval   = 0
-  new_host_delay      = 300
+  new_group_delay     = 300
   require_full_window = true
 
   monitor_thresholds {
@@ -119,7 +118,7 @@ EOT
   notify_no_data      = true
   no_data_timeframe   = 10
   renotify_interval   = 720
-  new_host_delay      = 300
+  new_group_delay     = 300
   require_full_window = true
 
   monitor_thresholds {
@@ -144,7 +143,7 @@ resource "datadog_monitor" "service_unreachable" {
   notify_no_data      = true
   no_data_timeframe   = 10
   renotify_interval   = 5
-  new_host_delay      = 300
+  new_group_delay     = 300
   require_full_window = true
 
   monitor_thresholds {
@@ -167,7 +166,6 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
   include_tags        = false
   notify_no_data      = false
   renotify_interval   = 5
-  new_host_delay      = 300
   require_full_window = true
 
   monitor_thresholds {

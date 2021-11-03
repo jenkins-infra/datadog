@@ -8,7 +8,7 @@ resource "datadog_monitor" "distribution_package_can_be_downloaded" {
   locked              = false
   no_data_timeframe   = 60
   renotify_interval   = 5
-  new_host_delay      = 300
+  new_group_delay     = 300
   require_full_window = false
 
   monitor_thresholds {
