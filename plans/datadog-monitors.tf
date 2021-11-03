@@ -72,33 +72,6 @@ EOT
   tags = ["terraformed:true", "service:jenkins-dns"]
 }
 
-resource "datadog_monitor" "plugin_site_index_age" {
-  name    = "PluginSite Index age"
-  type    = "metric alert"
-  message = <<EOT
-{{#is_alert}} {{ site.name }} index is too old {{/is_alert}}. @pagerduty
-EOT
-
-  query = "max(last_5m):max:plugins.index.age{*} >= 12"
-
-  notify_audit        = false
-  timeout_h           = 0
-  locked              = false
-  include_tags        = false
-  notify_no_data      = true
-  no_data_timeframe   = 2
-  renotify_interval   = 0
-  new_host_delay      = 300
-  require_full_window = true
-
-  monitor_thresholds {
-    critical = 12
-    warning  = 6
-  }
-
-  tags = ["terraformed:true", "service:plugin-site", "*"]
-}
-
 resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
