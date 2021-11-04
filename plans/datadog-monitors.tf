@@ -25,7 +25,7 @@ resource "datadog_monitor" "disk_space" {
   type    = "query alert"
   message = "@pagerduty"
 
-  query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!device:/dev/sda15,!device:/dev/loop*} by {host,device} < 1073741824"
+  query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} < 1073741824"
 
   locked              = false
   include_tags        = false
