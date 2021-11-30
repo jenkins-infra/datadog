@@ -11,6 +11,7 @@ conditions:
   isContainerTerraformDefined:
     name: "Is there a container named 'terraform' defined as the first container?"
     kind: yaml
+    disablesourceinput: true
     spec:
       file: "ci-pod-template.yml"
       key: spec.containers[0].name
