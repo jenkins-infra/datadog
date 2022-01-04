@@ -1,10 +1,7 @@
-#!/usr/bin/env groovy
-
 pipeline {
   agent {
     kubernetes {
       yamlFile 'ci-pod-template.yml'
-      defaultContainer('terraform')
     }
   }
 
