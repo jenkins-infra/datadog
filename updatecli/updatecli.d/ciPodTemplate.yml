@@ -1,21 +1,21 @@
 title: Bump Docker images of ci-pod-template.yml
 sources:
-  dockerTerraformImageVersion:
+  dockerHashicorpToolsImageVersion:
     kind: githubRelease
     spec:
       owner: "jenkins-infra"
-      repository: "docker-terraform"
+      repository: "docker-hashicorp-tools"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
 conditions:
-  isContainerTerraformDefined:
-    name: "Is there a container named 'terraform' defined as the first container?"
+  isContainerHashicorpToolsDefined:
+    name: "Is there a container named 'hashicorp-tools' defined as the first container?"
     kind: yaml
     disablesourceinput: true
     spec:
       file: "ci-pod-template.yml"
       key: spec.containers[0].name
-      value: terraform
+      value: hashicorp-tools
     scm:
       github:
         user: "{{ .github.user }}"
@@ -26,11 +26,11 @@ conditions:
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
 targets:
-  updateImageOnPodTemplateForTerraform:
-    name: "Update the value of the key 'image' of the first container ('terraform')"
+  updateImageOnPodTemplateForHashicorpTools:
+    name: "Update the value of the key 'image' of the first container ('hashicorp-tools')"
     kind: yaml
     transformers:
-      - addPrefix: "jenkinsciinfra/terraform:"
+      - addPrefix: "jenkinsciinfra/hashicorp-tools:"
     spec:
       file: "ci-pod-template.yml"
       key: spec.containers[0].image

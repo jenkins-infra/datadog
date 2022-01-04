@@ -4,7 +4,7 @@ spec:
   automountServiceAccountToken: false
   containers:
     - name: terraform
-      image: jenkinsciinfra/terraform:1.5.14
+      image: jenkinsciinfra/hashicorp-tools:0.0.1
       command:
         - cat
       tty: true
