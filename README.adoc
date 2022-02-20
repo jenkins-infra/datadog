@@ -1,47 +1,45 @@
-= Jenkins infra monitoring
-:tip-caption: :bulb:
-:note-caption: :information_source:
-:important-caption: :heavy_exclamation_mark:
-:caution-caption: :fire:
-:warning-caption: :warning:
+= Jenkins Infra Datadog monitoring
 :toc:
 
 This repository is meant to hold configuration files of Jenkins infrastructure monitoring stuff.
 
-== DataDog
+This repository hosts the infrastructure-as-code definition for all the link:https://www.datadoghq.com/:[DataDog] monitoring resources for the link:https://www.jenkins.io/projects/infrastructure/[Jenkins Infrastructure Project].
 
-Jenkins infrastructure is monitored using link:https://www.datadoghq.com/:[DataDog].
+== Requirements
 
-* Main DataDog organization: https://jenkins.datadoghq.com
-* Staging DataDog organization: https://jenkins-staging.datadoghq.com
+* An access to the Jenkins Datadog account for the Jenkins Infrastructure at https://jenkins.datadoghq.com.
+* The requirements (of the shared tools) listed at link:https://github.com/jenkins-infra/shared-tools/tree/main/terraform#requirements[shared-tools/terraform#requirements]
+* The link:https://www.terraform.io/language/settings/backends/azurerm[Terraform AzureRM Backend Configuration] on a local file named `backend-config`:
+** The content can be retrieved from the credentials of infra.ci.jenkins.io.
+** This file (`backend-config`) is git-ignored
+
+* The git command line to allow cloning the repository and its submodule link:https://github.com/jenkins-infra/shared-tools[shared-tools]
+** This repository has submodules. Once you cloned the repository, execute the following command to obtain the shared tools:
+
+[source,bash]
+----
+git submodule update --init --recursive
+----
 
 == Monitors
 
 DataDog monitors are configured through link:https://www.terraform.io/[Terraform] with the link:https://www.terraform.io/docs/providers/datadog/index.html[datadog] provider.
 
-=== Add a monitor
 
-1. For convenience, you can first create the monitor on DataDog's side, and then use the `Export` feature (monitor settings) to have a JSON representing the monitor
-2. Describe the monitor in `datadog-monitors.tf` using HCL
-3. Submit a PR. At this point, your monitor should be created to link:https://jenkins-staging.datadoghq.com[DataDog staging organization]
-4. When PR will be merged to master branch, Terraform configuration will be applied on the link:https://jenkins.datadoghq.com[main DataDog organization] (after an approval input step)
+Once you've fulfilled the <<Requirements>>, you may execute any command from https://github.com/jenkins-infra/shared-tools/blob/main/terraform/README.adoc#available-commands by adding the correct flag `--directory` pointing to `.shared-tools/terraform/`:
 
-== Dashboard
-The Jenkins infra project uses multiple private and public dashboard to have quick overviews of specific situation. While it's possible to automate the configuration of those dashboards, we never had the time to implement them.
+[source,bash]
+----
+make --directory=.shared-tools/terraform help
+make --directory=.shared-tools/terraform lint
+# ...
+----
 
-They are multiple ways to contribute to those dashboards:
+A usual change (add/update/remove a datadog monitor for instance) to this repository looks like the following:
 
-* If you think a specific dashboard would be usefull for the community, feel free to open a Jira ticket on link:https://issues.jenkins.io/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] with a complete description, why someone should implement it and don't forget to set the component to 'datadog'.
-
-* If you have sparetime and want to practice or learn Terraform, feel free to look at our Jira board link:https://issues.jenkins.io/issues/?jql=project%20%3D%20INFRA%20AND%20status%20in%20(Open%2C%20%22In%20Progress%22%2C%20Reopened)%20AND%20component%20in%20(EMPTY%2C%20datadog)[issues.jenkins-ci.org] and then open a Pull Request on this repository with your changes, your PR will be tested on link:https://ci.jenkins.io/job/Infra/job/datadog/job/master/[ci.jenkins.io]
-
-=== Public Dashboard
-
-* link:https://p.datadoghq.com/sb/0Igb9a-a5fcf385fd798d5eebcab7b52f5747df[Confluence]
-* link:https://p.datadoghq.com/sb/0Igb9a-e3831323722f931efe38cb02026d1974[Confluence Load]
-* link:https://p.datadoghq.com/sb/0Igb9a-fcf64e96ade0909af164628af8d9643b[Incidents]
-
-== Downtime
-
-You can mute DataDog monitors using their tags during a specific interval.
-For example, if you want to mute monitors for Confluence, you can use `service:confluence` tag to mute all related monitors at once.
+* Fork the repository and clone it locally
+* Follow the <<Requirements>> steps to obtain the shared tools
+* Start by running a full `make --directory=.shared-tools/terraform validate` command to ensure that you work on a sane base (should generate a report TXT file with no changes to be applied)
+* Edit the Terraform project files
+* Run the command `make --directory=.shared-tools/terraform validate` again to ensure that your changes are OK
+* Commit, push and open a pull request to let the Jenkins pipeline run the test + plan (as per https://github.com/jenkins-infra/shared-tools/blob/main/terraform/README.adoc#jenkins-pipeline)

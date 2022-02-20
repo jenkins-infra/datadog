@@ -28,7 +28,7 @@ sources:
     depends_on:
       - getLatestVersion
     spec:
-      command: bash ./updatecli/scripts/terraform-get-upgraded-lockfile.sh ./plans
+      command: bash ./updatecli/scripts/terraform-get-upgraded-lockfile.sh .
 
 targets:
   upgradeActualLockFile:
@@ -36,14 +36,14 @@ targets:
     kind: file
     sourceID: getLatestLockFileContent
     spec:
-      file: "./plans/.terraform.lock.hcl"
+      file: ".terraform.lock.hcl"
     scmID: default
   upgradeModuleVersion:
     name: "Update the version of the DataDog/datadog Terraform provider"
     kind: file
     sourceID: getLatestVersion
     spec:
-      file: plans/main.tf
+      file: versions.tf
       matchPattern: >-
         source(.*)=(.*)"DataDog/datadog"(\r\n|\r|\n)(.*)version(.*)=(.*)
       replacePattern: >-
