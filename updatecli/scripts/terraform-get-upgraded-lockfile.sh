@@ -38,7 +38,7 @@ command -v terraform >/dev/null 2>&1 || {
 
 log_message "Upgrading using terraform $(terraform version)"
 
-declare -a terraform_required_files=("main.tf" ".terraform.lock.hcl")
+declare -a terraform_required_files=("versions.tf" ".terraform.lock.hcl")
 
 ## Create a temporary terraform project with only the required files within (do not risk manipulating other resources of the project)
 for required_file in "${terraform_required_files[@]}"

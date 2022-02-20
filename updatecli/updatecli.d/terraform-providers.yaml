@@ -28,7 +28,7 @@ sources:
     depends_on:
       - getLatestVersion
     spec:
-      command: bash ./updatecli/scripts/terraform-get-upgraded-lockfile.sh ./plans
+      command: bash ./updatecli/scripts/terraform-get-upgraded-lockfile.sh .
 
 targets:
   upgradeActualLockFile:
