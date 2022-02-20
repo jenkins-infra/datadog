@@ -34,7 +34,7 @@ resource "datadog_synthetics_test" "mirrors_jenkinsci_org" {
   type = "browser"
   request_definition {
     method = "GET"
-    url    = "https://mirrors.jenkins-ci.org"
+    url    = "http://mirrors.jenkins-ci.org"
   }
   assertion {
     type     = "statusCode"
