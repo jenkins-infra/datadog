@@ -14,13 +14,13 @@ scms:
 
 sources:
   getLatestVersion:
-    kind: githubRelease
+    kind: githubrelease
     spec:
       owner: "DataDog"
       repository: "terraform-provider-datadog"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-      versionFilter:
+      versionfilter:
         ## Semver removes any 'v' prefix and get the latest version following semantic
         kind: semver
   getLatestLockFileContent:
@@ -38,17 +38,6 @@ targets:
     spec:
       file: ".terraform.lock.hcl"
     scmid: default
-  upgradeModuleVersion:
-    name: "Update the version of the DataDog/datadog Terraform provider"
-    kind: file
-    sourceid: getLatestVersion
-    spec:
-      file: versions.tf
-      matchPattern: >-
-        source(.*)=(.*)"DataDog/datadog"(\r\n|\r|\n)(.*)version(.*)=(.*)
-      replacePattern: >-
-        source${1}=${2}"DataDog/datadog"${3}${4}version${5}= "{{ source `getLatestVersion` }}"
-    scmid: default
 
 pullrequests:
   default:
@@ -56,7 +45,6 @@ pullrequests:
     scmid: default
     targets:
       - upgradeActualLockFile
-      - upgradeModuleVersion
     spec:
       labels:
         - dependencies
