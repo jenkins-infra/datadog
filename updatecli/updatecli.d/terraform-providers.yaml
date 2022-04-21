@@ -34,26 +34,26 @@ targets:
   upgradeActualLockFile:
     name: "Update the content of the Terraform lock file to upgrade terraform providers"
     kind: file
-    sourceID: getLatestLockFileContent
+    sourceid: getLatestLockFileContent
     spec:
       file: ".terraform.lock.hcl"
-    scmID: default
+    scmid: default
   upgradeModuleVersion:
     name: "Update the version of the DataDog/datadog Terraform provider"
     kind: file
-    sourceID: getLatestVersion
+    sourceid: getLatestVersion
     spec:
       file: versions.tf
       matchPattern: >-
         source(.*)=(.*)"DataDog/datadog"(\r\n|\r|\n)(.*)version(.*)=(.*)
       replacePattern: >-
         source${1}=${2}"DataDog/datadog"${3}${4}version${5}= "{{ source `getLatestVersion` }}"
-    scmID: default
+    scmid: default
 
 pullrequests:
   default:
     kind: github
-    scmID: default
+    scmid: default
     targets:
       - upgradeActualLockFile
       - upgradeModuleVersion
