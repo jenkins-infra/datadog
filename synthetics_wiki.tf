@@ -7,7 +7,7 @@ resource "datadog_synthetics_test" "wikijenkinsio" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "200"
+    target   = "205"
   }
   locations = ["aws:eu-central-1"]
   options_list {
