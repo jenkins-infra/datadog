@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "wikijenkinsio" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://wiki.jenkins.io/status"
