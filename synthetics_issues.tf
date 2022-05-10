@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "issuesjenkinsio" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://issues.jenkins.io/status"
@@ -17,17 +17,11 @@ resource "datadog_synthetics_test" "issuesjenkinsio" {
   message = "Notify @pagerduty"
   tags    = ["production", "jenkins.io"]
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
-
   status = "live"
 }
 
 resource "datadog_synthetics_test" "issuesjenkinsciorg" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://issues.jenkins-ci.org/status"
@@ -49,12 +43,6 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   name    = "issues.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags    = ["production", "jenkins-ci.org"]
-
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
 
   status = "live"
 }

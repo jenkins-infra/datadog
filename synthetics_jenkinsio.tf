@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "jenkinsio" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://jenkins.io"
@@ -18,9 +18,5 @@ resource "datadog_synthetics_test" "jenkinsio" {
   tags    = ["production", "jenkins.io"]
 
   status = "live"
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
+
 }

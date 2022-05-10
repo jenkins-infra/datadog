@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "archives_jenkins_io" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://archives.jenkins.io"
@@ -20,18 +20,11 @@ resource "datadog_synthetics_test" "archives_jenkins_io" {
     "production"
   ]
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-
-  ]
-
   status = "live"
 }
 
 resource "datadog_synthetics_test" "archives_jenkinsci_org" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://archives.jenkins-ci.org"
@@ -50,13 +43,6 @@ resource "datadog_synthetics_test" "archives_jenkinsci_org" {
   tags = [
     "jenkins-ci.org",
     "production"
-  ]
-
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-
   ]
 
   status = "live"
