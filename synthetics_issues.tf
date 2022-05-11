@@ -35,7 +35,7 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
     type     = "header"
     operator = "is"
     property = "location"
-    target   = "https://issues.jenkins.io:443/status"
+    target   = "https://issues.jenkins.io/status"
   }
 
   locations = ["aws:eu-central-1"]
