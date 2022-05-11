@@ -5,7 +5,6 @@ resource "datadog_monitor" "distribution_package_can_be_downloaded" {
   query               = "avg(last_30m):avg:jenkins.package.available{*} by {package} <= 0"
   notify_audit        = false
   timeout_h           = 0
-  locked              = false
   no_data_timeframe   = 60
   renotify_interval   = 5
   new_group_delay     = 300
