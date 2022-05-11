@@ -36,7 +36,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
     type     = "header"
     operator = "is"
     property = "location"
-    target   = "https://wiki.jenkins.io/status"
+    target   = "https://wiki.jenkins.io:443/status"
   }
 
   locations = ["aws:eu-central-1"]
