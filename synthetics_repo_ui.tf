@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "repojenkinsciorgui" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://repo.jenkins-ci.org/ui"
@@ -19,9 +19,4 @@ resource "datadog_synthetics_test" "repojenkinsciorgui" {
 
   status = "live"
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
 }

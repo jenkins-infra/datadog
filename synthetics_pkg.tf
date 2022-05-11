@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "pkg_jenkins_io" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://pkg.origin.jenkins.io"
@@ -20,19 +20,12 @@ resource "datadog_synthetics_test" "pkg_jenkins_io" {
     "production"
   ]
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-
-  ]
-
   status = "live"
 }
 
 ## Do not monitor https
 resource "datadog_synthetics_test" "pkg_jenkinsci_org" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "http://pkg.jenkins-ci.org"
@@ -51,13 +44,6 @@ resource "datadog_synthetics_test" "pkg_jenkinsci_org" {
   tags = [
     "jenkins-ci.org",
     "production"
-  ]
-
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-
   ]
 
   status = "live"

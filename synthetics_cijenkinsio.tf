@@ -1,5 +1,5 @@
 resource "datadog_synthetics_test" "cijenkinsio" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://ci.jenkins.io"
@@ -19,10 +19,4 @@ resource "datadog_synthetics_test" "cijenkinsio" {
 
   status = "live"
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-
-  ]
 }
