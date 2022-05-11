@@ -7,7 +7,7 @@ resource "datadog_synthetics_test" "wikijenkinsio" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "205"
+    target   = "200"
   }
   locations = ["aws:eu-central-1"]
   options_list {
@@ -19,15 +19,10 @@ resource "datadog_synthetics_test" "wikijenkinsio" {
 
   status = "live"
 
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
 }
 
 resource "datadog_synthetics_test" "wikijenkins_ciorg" {
-  type = "browser"
+  type = "api"
   request_definition {
     method = "GET"
     url    = "https://wiki.jenkins-ci.org/status"
@@ -60,12 +55,6 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   name    = "wiki.jenkins-ci.org"
   message = "Notify @pagerduty"
   tags    = ["production", "jenkins-ci.org"]
-
-  device_ids = [
-    "laptop_large",
-    "tablet",
-    "mobile_small"
-  ]
 
   status = "live"
 }
