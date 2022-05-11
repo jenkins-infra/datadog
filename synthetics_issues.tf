@@ -33,9 +33,10 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   }
   assertion {
     type     = "header"
-    operator = "is"
-    target   = "location: https://issues.jenkins.io/"
+    property = "location"
+    target   = "https://issues.jenkins.io:443/status"
   }
+
   locations = ["aws:eu-central-1"]
   options_list {
     tick_every = 900

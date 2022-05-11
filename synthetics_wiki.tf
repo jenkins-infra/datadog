@@ -34,10 +34,10 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
   }
   assertion {
     type     = "header"
-    operator = "is"
-    target   = "location: https://wiki.jenkins.io/status"
-
+    property = "location"
+    target   = "https://wiki.jenkins.io:443/status"
   }
+
   locations = ["aws:eu-central-1"]
   # Can't work at the moment according datadog message
   # Synthetics is only available for the Datadog US site.
