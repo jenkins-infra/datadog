@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "jenkinsio" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "https://jenkins.io"
+    url    = "https://www.jenkins.io"
   }
   assertion {
     type     = "statusCode"
