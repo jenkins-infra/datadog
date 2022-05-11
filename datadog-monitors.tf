@@ -9,7 +9,6 @@ resource "datadog_monitor" "account_app_slow" {
   renotify_interval   = 0
   no_data_timeframe   = 10
   notify_audit        = false
-  locked              = false
   timeout_h           = 0
   require_full_window = true
 
@@ -27,7 +26,6 @@ resource "datadog_monitor" "disk_space" {
 
   query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} < 1073741824"
 
-  locked              = false
   include_tags        = false
   notify_no_data      = false
   notify_audit        = false
@@ -56,7 +54,6 @@ EOT
 
   notify_audit        = false
   timeout_h           = 0
-  locked              = false
   include_tags        = false
   notify_no_data      = true
   no_data_timeframe   = 2
@@ -82,7 +79,6 @@ EOT
 
   notify_audit        = false
   timeout_h           = 0
-  locked              = false
   include_tags        = false
   notify_no_data      = true
   no_data_timeframe   = 10
@@ -113,7 +109,6 @@ EOT
 
   notify_audit        = false
   timeout_h           = 0
-  locked              = false
   include_tags        = false
   notify_no_data      = true
   no_data_timeframe   = 10
@@ -137,7 +132,6 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
 
   notify_audit        = false
   timeout_h           = 0
-  locked              = false
   include_tags        = false
   notify_no_data      = false
   renotify_interval   = 5
