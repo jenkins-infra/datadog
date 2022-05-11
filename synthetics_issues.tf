@@ -33,6 +33,7 @@ resource "datadog_synthetics_test" "issuesjenkinsciorg" {
   }
   assertion {
     type     = "header"
+    operator = "is"
     property = "location"
     target   = "https://issues.jenkins.io:443/status"
   }
