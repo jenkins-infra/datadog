@@ -32,7 +32,7 @@ resource "datadog_synthetics_test" "wikijenkins_ciorg" {
     operator = "is"
     target   = "200"
   }
-  
+
   locations = ["aws:eu-central-1"]
   # Can't work at the moment according datadog message
   # Synthetics is only available for the Datadog US site.
