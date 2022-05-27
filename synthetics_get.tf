@@ -27,7 +27,7 @@ resource "datadog_synthetics_test" "get_jenkins_io_enforced_https" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "http://get.jenkins-ci.org"
+    url    = "http://get.jenkins.io"
   }
   assertion {
     type     = "statusCode"
@@ -38,7 +38,7 @@ resource "datadog_synthetics_test" "get_jenkins_io_enforced_https" {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = "https://get.jenkins-ci.org"
+    target   = "https://get.jenkins.io"
   }
   locations = ["aws:eu-central-1"]
   options_list {
