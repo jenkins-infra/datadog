@@ -47,7 +47,7 @@ resource "datadog_monitor" "jenkins_dns" {
   message = <<EOT
 It is taking too long or the data is simply unavailable from one or more of our DNS servers.
 Consult the [bind runbook](https://github.com/jenkins-infra/runbooks/tree/master/bind) for corrective actions
-@pagerduty @oncall
+@pagerduty
 EOT
 
   query = "avg(last_5m):avg:dns.response_time{*} > 0.5"
@@ -72,7 +72,7 @@ resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
   message = <<EOT
-SSL certificate expiring soon for {{url}}, you should take a looksee. @oncall @pagerduty
+SSL certificate expiring soon for {{url}}, you should take a looksee. @pagerduty
 EOT
 
   query = "max(last_15m):min:http.ssl.days_left{production} by {url} <= 5"
@@ -102,7 +102,7 @@ resource "datadog_monitor" "weird_response_time" {
 {{#is_alert_to_warning}}{{url.name}} response time is bigger than {{warn_threshold}} seconds {{/is_alert_to_warning}}
 {{#is_alert_recovery}}{{url.name}} response time is back to normal{{/is_alert_recovery}}
 {{#is_no_data}}{{url.name}} does not response{{/is_no_data}}
-@oncall @pagerduty
+@pagerduty
 EOT
 
   query = "avg(last_5m):max:network.http.response_time{production} by {url} > 5"
