@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "mirrors_jenkins_io" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "http://mirrors.jenkins.io"
+    url    = "https://mirrors.jenkins.io"
   }
   assertion {
     type     = "statusCode"
@@ -27,7 +27,7 @@ resource "datadog_synthetics_test" "mirrors_jenkinsci_org" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "http://mirrors.jenkins-ci.org"
+    url    = "https://mirrors.jenkins-ci.org"
   }
   assertion {
     type     = "statusCode"
