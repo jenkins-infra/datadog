@@ -33,7 +33,7 @@ resource "datadog_synthetics_test" "pkg_jenkinsci_org" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "200"
+    target   = "301"
   }
   locations = ["aws:eu-central-1"]
   options_list {
