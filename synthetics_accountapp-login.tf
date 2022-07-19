@@ -5,7 +5,7 @@ resource "datadog_synthetics_test" "accountapp-login" {
     url    = "https://accounts.jenkins.io/doLogin"
     body   = "userid=datadog_monitoring&password=${var.datadog_jenkinsuser_password}"
   }
-  request_headers {
+  request_headers = {
     Content-Type   = "application/x-www-form-urlencoded"
   }
   assertion {
