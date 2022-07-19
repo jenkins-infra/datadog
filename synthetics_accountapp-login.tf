@@ -3,7 +3,7 @@ resource "datadog_synthetics_test" "accountapp-login" {
   request_definition {
     method = "POST"
     url    = "https://accounts.jenkins.io/doLogin"
-    body   = "userid=datadog_monitoring&password=${datadog_jenkinsuser_password}"
+    body   = "userid=datadog_monitoring&password=${var.datadog_jenkinsuser_password}"
   }
   request_headers {
     Content-Type   = "application/x-www-form-urlencoded"
