@@ -102,7 +102,6 @@ resource "datadog_monitor" "weird_response_time" {
 {{#is_alert_to_warning}}{{url.name}} response time is bigger than {{warn_threshold}} seconds {{/is_alert_to_warning}}
 {{#is_alert_recovery}}{{url.name}} response time is back to normal{{/is_alert_recovery}}
 {{#is_no_data}}{{url.name}} does not response{{/is_no_data}}
-@pagerduty
 EOT
 
   query = "avg(last_5m):max:network.http.response_time{production} by {url} > 5"
