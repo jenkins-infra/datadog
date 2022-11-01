@@ -22,7 +22,7 @@ parallel(
   'updatecli': {
     updatecli(action: 'diff', updatecliDockerImage: dockerImage)
     if (env.BRANCH_IS_PRIMARY) {
-      updatecli(action: 'apply', cronTriggerExpression: '@weekly', updatecliDockerImage: dockerImage)
+      updatecli(action: 'apply', cronTriggerExpression: '@daily', updatecliDockerImage: dockerImage)
     }
   },
 )
