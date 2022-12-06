@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "plugin_health_scoring" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "plugin-health.jenkins.io"
+    url    = "https://plugin-health.jenkins.io"
   }
   assertion {
     type     = "statusCode"
