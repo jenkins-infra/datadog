@@ -3,7 +3,7 @@ resource "datadog_synthetics_test" "artifact-caching-proxy-providers" {
   type     = "api"
   request_definition {
     method = "GET"
-    url    = "https://repo.${each.value}.jenkins.io/healthz"
+    url    = "https://repo.${each.value}.jenkins.io/health"
   }
   assertion {
     type     = "statusCode"
