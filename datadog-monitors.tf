@@ -42,7 +42,7 @@ resource "datadog_monitor" "disk_space" {
 }
 
 resource "datadog_monitor" "persistent_volume_space" {
-  name    = "Persitent Volume is below {{ threshold }}% available space in the {{ namespace.name }} namespace on {{ cluster_name.name }} cluster"
+  name    = "Persistent Volume is below {{ threshold }}% available space in the {{ namespace.name }} namespace on {{ cluster_name.name }} cluster"
   type    = "query alert"
   message = "@pagerduty"
 
