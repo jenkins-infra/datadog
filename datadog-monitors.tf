@@ -41,12 +41,12 @@ resource "datadog_monitor" "disk_space" {
   tags = ["terraformed:true", "*"]
 }
 
-resource "datadog_monitor" "persistent_volume_space" {
-  name    = "Persistent Volume is below {{ threshold }}% available space in the {{ namespace.name }} namespace on {{ cluster_name.name }} cluster"
+resource "datadog_monitor" "volume_space" {
+  name    = "Available space is below {{ threshold }}% for the {{ persistentvolumeclaim.name }} PVC on {{ cluster_name.name }} cluster"
   type    = "query alert"
   message = "@pagerduty"
 
-  query = "avg(last_5m):exclude_null(avg:kubernetes.kubelet.volume.stats.available_bytes{*} by {cluster_name,namespace}) / exclude_null(avg:kubernetes.kubelet.volume.stats.capacity_bytes{*} by {cluster_name,namespace}) * 100 < 10"
+  query = "avg(last_5m):exclude_null(avg:kubernetes.kubelet.volume.stats.available_bytes{*} by {cluster_name,persistentvolumeclaim}) / exclude_null(avg:kubernetes.kubelet.volume.stats.capacity_bytes{*} by {cluster_name,persistentvolumeclaim}) * 100 < 10"
 
   include_tags        = false
   notify_no_data      = false
