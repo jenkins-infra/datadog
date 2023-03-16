@@ -41,6 +41,29 @@ resource "datadog_monitor" "disk_space" {
   tags = ["terraformed:true", "*"]
 }
 
+resource "datadog_monitor" "volume_space" {
+  name    = "Available space is below {{ threshold }}% for the {{ persistentvolumeclaim.name }} PVC on {{ cluster_name.name }} cluster"
+  type    = "query alert"
+  message = "@pagerduty"
+
+  query = "avg(last_5m):exclude_null(avg:kubernetes.kubelet.volume.stats.available_bytes{*} by {cluster_name,persistentvolumeclaim}) / exclude_null(avg:kubernetes.kubelet.volume.stats.capacity_bytes{*} by {cluster_name,persistentvolumeclaim}) * 100 < 10"
+
+  include_tags        = false
+  notify_no_data      = false
+  notify_audit        = false
+  timeout_h           = 0
+  renotify_interval   = 0
+  new_group_delay     = 300
+  require_full_window = true
+
+  monitor_thresholds {
+    critical = 10
+    warning  = 20
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
 resource "datadog_monitor" "jenkins_dns" {
   name    = "Jenkins DNS may be broken, non-responsive"
   type    = "metric alert"
