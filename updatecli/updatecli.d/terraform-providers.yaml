@@ -1,4 +1,4 @@
-title: "Bump Terraform plugins - not modules"
+name: "Bump Terraform plugins - not modules"
 
 scms:
   default:
@@ -25,7 +25,7 @@ sources:
         kind: semver
   getLatestLockFileContent:
     kind: shell
-    depends_on:
+    dependson:
       - getLatestVersion
     spec:
       command: bash ./updatecli/scripts/terraform-get-upgraded-lockfile.sh .
@@ -39,12 +39,11 @@ targets:
       file: ".terraform.lock.hcl"
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
+    title: "Bump Terraform plugins - not modules"
     scmid: default
-    targets:
-      - upgradeActualLockFile
     spec:
       labels:
         - dependencies

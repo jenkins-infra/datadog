@@ -1,4 +1,4 @@
-title: Bump Jenkinsfile_k8s for updatecli `hashicorp-tools` docker image version to lastest image release
+name: Bump `hashicorp-tools` docker image version
 
 scms:
   default:
@@ -42,12 +42,11 @@ targets:
         'jenkinsciinfra/hashicorp-tools:{{ source `dockerHashicorpToolsImageVersion` }}'
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
+    title: Bump `hashicorp-tools` docker image version to {{ source "dockerHashicorpToolsImageVersion" }}
     scmid: default
-    targets:
-      - updateJenkinsfile
     spec:
       labels:
         - dependencies
