@@ -24,7 +24,7 @@ resource "datadog_monitor" "disk_space" {
   type    = "query alert"
   message = "@pagerduty"
 
-  query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} / min:system.disk.total{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} * 100 < 10"
+  query = "max(last_5m):exclude_null(min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) / exclude_null(min:system.disk.total{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) * 100 < 10"
   include_tags        = false
   notify_no_data      = false
   notify_audit        = false
