@@ -20,7 +20,7 @@ resource "datadog_monitor" "account_app_slow" {
 }
 
 resource "datadog_monitor" "disk_space" {
-  name    = "Available disk space is below {{ threshold }}% free for {{host.name}}"
+  name    = "Available disk space is below {{ value }}% free for {{host.name}}"
   type    = "query alert"
   message = "@pagerduty"
 
@@ -42,7 +42,7 @@ resource "datadog_monitor" "disk_space" {
 }
 
 resource "datadog_monitor" "volume_space" {
-  name    = "Available space is below {{ threshold }}% for the {{ persistentvolumeclaim.name }} PVC on {{ cluster_name.name }} cluster"
+  name    = "Available space is below {{ value }}% for the {{ persistentvolumeclaim.name }} PVC on {{ cluster_name.name }} cluster"
   type    = "query alert"
   message = "@pagerduty"
 
