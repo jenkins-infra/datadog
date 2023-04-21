@@ -20,12 +20,11 @@ resource "datadog_monitor" "account_app_slow" {
 }
 
 resource "datadog_monitor" "disk_space" {
-  name    = "Disk space is below 1GB free {{host.name}}"
+  name    = "Available disk space is below {{ threshold }}% free for {{host.name}}"
   type    = "query alert"
   message = "@pagerduty"
 
-  query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} < 1073741824"
-
+  query = "max(last_5m):min:system.disk.free{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} / min:system.disk.total{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device} * 100 < 10"
   include_tags        = false
   notify_no_data      = false
   notify_audit        = false
@@ -35,7 +34,8 @@ resource "datadog_monitor" "disk_space" {
   require_full_window = true
 
   monitor_thresholds {
-    critical = 1073741824
+    critical = 10
+    warning  = 20
   }
 
   tags = ["terraformed:true", "*"]
