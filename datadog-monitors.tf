@@ -64,33 +64,6 @@ resource "datadog_monitor" "volume_space" {
   tags = ["terraformed:true", "*"]
 }
 
-resource "datadog_monitor" "jenkins_dns" {
-  name    = "Jenkins DNS may be broken, non-responsive"
-  type    = "metric alert"
-  message = <<EOT
-It is taking too long or the data is simply unavailable from one or more of our DNS servers.
-Consult the [bind runbook](https://github.com/jenkins-infra/runbooks/tree/master/bind) for corrective actions
-{{^is_warning}}@pagerduty{{/is_warning}}
-EOT
-
-  query = "avg(last_5m):avg:dns.response_time{*} > 0.5"
-
-  notify_audit        = false
-  timeout_h           = 0
-  include_tags        = false
-  notify_no_data      = true
-  no_data_timeframe   = 2
-  renotify_interval   = 10
-  require_full_window = true
-
-  monitor_thresholds {
-    critical = 0.5
-    warning  = 0.2
-  }
-
-  tags = ["terraformed:true", "service:jenkins-dns"]
-}
-
 resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
