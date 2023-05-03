@@ -94,10 +94,10 @@ resource "datadog_monitor" "weird_response_time" {
   name    = "Weird Response time {{url}} from {{ cluster_name.name }} cluster"
   type    = "metric alert"
   message = <<EOT
-{{#is_alert}}{{url.name}} response time is bigger than {{threshold}} seconds  {{/is_alert}}
-{{#is_alert_to_warning}}{{url.name}} response time is bigger than {{warn_threshold}} seconds {{/is_alert_to_warning}}
-{{#is_alert_recovery}}{{url.name}} response time is back to normal{{/is_alert_recovery}}
-{{#is_no_data}}{{url.name}} does not response{{/is_no_data}}
+{{#is_alert}}{{url.name}} response time is bigger than {{threshold}} seconds from {{ cluster_name.name }} cluster{{/is_alert}}
+{{#is_alert_to_warning}}{{url.name}} response time is bigger than {{warn_threshold}} seconds from {{ cluster_name.name }} cluster{{/is_alert_to_warning}}
+{{#is_alert_recovery}}{{url.name}} response time from {{ cluster_name.name }} cluster is back to normal{{/is_alert_recovery}}
+{{#is_no_data}}{{url.name}} does not response from {{ cluster_name.name }} cluster{{/is_no_data}}
 {{^is_warning}}@pagerduty{{/is_warning}}
 EOT
 
