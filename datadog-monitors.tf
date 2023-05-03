@@ -91,7 +91,7 @@ EOT
 }
 
 resource "datadog_monitor" "weird_response_time" {
-  name    = "Weird Response time {{url}}"
+  name    = "Weird Response time {{url}} from {{ cluster_name.name }} cluster"
   type    = "metric alert"
   message = <<EOT
 {{#is_alert}}{{url.name}} response time is bigger than {{threshold}} seconds  {{/is_alert}}
@@ -101,7 +101,7 @@ resource "datadog_monitor" "weird_response_time" {
 {{^is_warning}}@pagerduty{{/is_warning}}
 EOT
 
-  query = "avg(last_5m):max:network.http.response_time{production} by {url} > 5"
+  query = "avg(last_5m):max:network.http.response_time{production} by {url,cluster_name} > 5"
 
   notify_audit        = false
   timeout_h           = 0
