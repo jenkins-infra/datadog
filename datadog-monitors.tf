@@ -24,7 +24,7 @@ resource "datadog_monitor" "disk_space" {
   type    = "query alert"
   message = "{{^is_warning}}@pagerduty{{/is_warning}}"
 
-  query               = "avg(last_5m):exclude_null(avg:system.disk.in_use{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) > 0.9"
+  query               = "avg(last_5m):exclude_null(avg:system.disk.in_use{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) * 100 > 90"
   include_tags        = false
   notify_no_data      = false
   notify_audit        = false
@@ -34,8 +34,8 @@ resource "datadog_monitor" "disk_space" {
   require_full_window = true
 
   monitor_thresholds {
-    critical = 0.9
-    warning  = 0.8
+    critical = 90
+    warning  = 80
   }
 
   tags = ["terraformed:true", "*"]
