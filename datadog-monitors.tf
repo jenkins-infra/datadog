@@ -86,6 +86,30 @@ resource "datadog_monitor" "volume_space" {
   tags = ["terraformed:true", "*"]
 }
 
+
+resource "datadog_monitor" "volume_inodes" {
+  name    = "Available inodes is below {{ value }}% for the {{ persistentvolumeclaim.name }} PVC on {{ cluster_name.name }} cluster"
+  type    = "query alert"
+  message = "{{^is_warning}}@pagerduty{{/is_warning}}"
+
+  query = "avg(last_5m):exclude_null(avg:kubernetes.kubelet.volume.stats.inodes_free{*} by {cluster_name,persistentvolumeclaim}) / exclude_null(avg:kubernetes.kubelet.volume.stats.inodes{*} by {cluster_name,persistentvolumeclaim}) * 100 < 10"
+
+  include_tags        = false
+  notify_no_data      = false
+  notify_audit        = false
+  timeout_h           = 0
+  renotify_interval   = 0
+  new_group_delay     = 300
+  require_full_window = true
+
+  monitor_thresholds {
+    critical = 10
+    warning  = 20
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
 resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
