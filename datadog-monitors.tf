@@ -20,11 +20,33 @@ resource "datadog_monitor" "account_app_slow" {
 }
 
 resource "datadog_monitor" "disk_space" {
-  name    = "Available disk space is above {{ value }}% used for {{host.name}}"
+  name    = "Disk space is above {{ value }}% used for {{host.name}}"
   type    = "query alert"
   message = "{{^is_warning}}@pagerduty{{/is_warning}}"
 
   query               = "avg(last_5m):exclude_null(avg:system.disk.in_use{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) * 100 > 90"
+  include_tags        = false
+  notify_no_data      = false
+  notify_audit        = false
+  timeout_h           = 0
+  renotify_interval   = 0
+  new_group_delay     = 300
+  require_full_window = true
+
+  monitor_thresholds {
+    critical = 90
+    warning  = 80
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
+resource "datadog_monitor" "disk_inodes" {
+  name    = "Disk inodes is above {{ value }}% used for {{host.name}}"
+  type    = "query alert"
+  message = "{{^is_warning}}@pagerduty{{/is_warning}}"
+
+  query               = "avg(last_5m):exclude_null(avg:system.inodes.in_use{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*} by {host,device}) * 100 > 90"
   include_tags        = false
   notify_no_data      = false
   notify_audit        = false
