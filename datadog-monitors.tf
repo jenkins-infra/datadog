@@ -186,3 +186,25 @@ resource "datadog_monitor" "jenkins_buildqueue_size" {
 
   tags = ["terraformed:true", "*"]
 }
+
+resource "datadog_monitor" "ldap_process_stopped" {
+  name    = "LDAP process stopped"
+  type    = "process alert"
+  message = "Checked that the LDAP container is running correctly on {{ cluster_name.name }} by running \n```\nkubectl get pods -n ldap\n```\nAnd restart if necessary by running \n```\nkubectl delete pods -n ldap ldap-0\n``` @pagerduty"
+
+  query = "processes('ldap').over('command:slapd').rollup('count').last('5m') < 1"
+
+  notify_audit        = false
+  timeout_h           = 0
+  include_tags        = true
+  notify_no_data      = false
+  renotify_interval   = 0
+  new_group_delay     = 300
+  require_full_window = false
+
+  monitor_thresholds {
+    critical = 1
+  }
+
+  tags = ["terraformed:true", "*"]
+}
