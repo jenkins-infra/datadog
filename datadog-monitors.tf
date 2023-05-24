@@ -1,9 +1,9 @@
 resource "datadog_monitor" "account_app_slow" {
   name    = "Account app is slow"
-  type    = "metric alert"
-  message = "@all @pagerduty Account App is slow"
+  type    = "query alert"
+  message = "@pagerduty Account App is slow"
 
-  query = "avg(last_5m):avg:network.http.response_time{url:https://accounts.jenkins.io/} > 1"
+  query = "avg(last_5m):avg:network.http.response_time{url:https://accounts.jenkins.io} > 1"
 
   notify_no_data      = true
   renotify_interval   = 0
