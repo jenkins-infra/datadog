@@ -199,7 +199,6 @@ resource "datadog_monitor" "ldap_process_stopped" {
   include_tags        = true
   notify_no_data      = false
   renotify_interval   = 0
-  new_group_delay     = 300
   require_full_window = false
 
   monitor_thresholds {
