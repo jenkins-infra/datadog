@@ -35,13 +35,13 @@ resource "datadog_synthetics_test" "jenkinsio_www_redirection" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "302"
+    target   = "301"
   }
   assertion {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = "https://www.jenkins.io"
+    target   = "https://www.jenkins.io/"
   }
   options_list {
     tick_every = 900
@@ -72,7 +72,7 @@ resource "datadog_synthetics_test" "jenkinsio_enforced_https" {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = "https://www.jenkins.io"
+    target   = "https://www.jenkins.io/"
   }
   locations = ["aws:eu-central-1"]
   options_list {
