@@ -25,3 +25,63 @@ resource "datadog_synthetics_test" "jenkinsio" {
   status = "live"
 
 }
+
+resource "datadog_synthetics_test" "jenkinsio_www_redirection" {
+  type = "api"
+  request_definition {
+    method = "GET"
+    url    = "http://jenkins.io"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "302"
+  }
+  assertion {
+    type     = "header"
+    property = "location"
+    operator = "is"
+    target   = "https://www.jenkins.io"
+  }
+  options_list {
+    tick_every = 900
+  }
+  name    = "jenkins.io-www-redirection"
+  message = "Notify @pagerduty"
+  tags = [
+    "jenkins.io",
+    "production"
+  ]
+
+  status = "live"
+}
+
+resource "datadog_synthetics_test" "jenkinsio_enforced_https" {
+  type = "api"
+  request_definition {
+    method = "GET"
+    url    = "http://jenkins.io"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "301"
+  }
+  assertion {
+    type     = "header"
+    property = "location"
+    operator = "is"
+    target   = "https://www.jenkins.io"
+  }
+  options_list {
+    tick_every = 900
+  }
+  name    = "jenkins.io-enforced-http"
+  message = "Notify @pagerduty"
+  tags = [
+    "jenkins.io",
+    "production"
+  ]
+
+  status = "live"
+}
