@@ -48,7 +48,7 @@ resource "datadog_synthetics_test" "jenkinsio_www_redirection" {
   }
   locations = ["aws:eu-central-1"]
   name    = "jenkins.io-www-redirection"
-  # message = "Notify @pagerduty"
+  message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
     "production"
@@ -79,7 +79,7 @@ resource "datadog_synthetics_test" "jenkinsio_enforced_https" {
     tick_every = 900
   }
   name    = "jenkins.io-enforced-http"
-  # message = "Notify @pagerduty"
+  message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
     "production"
