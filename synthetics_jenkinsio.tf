@@ -35,13 +35,13 @@ resource "datadog_synthetics_test" "jenkinsio_www_redirection" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "301"
+    target   = "308" # Permanent redirect from Nginx ingress eventually cached by Fastly
   }
   assertion {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = "https://www.jenkins.io/"
+    target   = "https://jenkins.io"
   }
   options_list {
     tick_every = 900
@@ -66,13 +66,13 @@ resource "datadog_synthetics_test" "jenkinsio_enforced_https" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "301"
+    target   = "308" # Permanent redirect from Nginx ingress eventually cached by Fastly
   }
   assertion {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = "https://www.jenkins.io/"
+    target   = "https://jenkins.io"
   }
   locations = ["aws:eu-central-1"]
   options_list {
