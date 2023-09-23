@@ -47,8 +47,8 @@ resource "datadog_synthetics_test" "jenkinsio_www_redirection" {
     tick_every = 900
   }
   locations = ["aws:eu-central-1"]
-  name    = "jenkins.io-www-redirection"
-  message = "Notify @pagerduty"
+  name      = "jenkins.io-www-redirection"
+  message   = "Notify @pagerduty"
   tags = [
     "jenkins.io",
     "production"
