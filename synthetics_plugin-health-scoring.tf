@@ -23,7 +23,7 @@ resource "datadog_synthetics_test" "plugin_health_scoring" {
   status = "live"
 }
 
-resource "datadog_synthetics_test" "plugin_health_scoring" {
+resource "datadog_synthetics_test" "plugin_health_scoring_probes" {
   type = "api"
   request_definition {
     method = "GET"
