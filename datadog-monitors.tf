@@ -110,6 +110,31 @@ resource "datadog_monitor" "volume_inodes" {
   tags = ["terraformed:true", "*"]
 }
 
+
+resource "datadog_monitor" "azurefileshare_space" {
+  name    = "Volume usage is above {{ value }}% for the {{ name }} Azure File Share"
+  type    = "query alert"
+  message = "{{^is_warning}}@pagerduty{{/is_warning}}"
+
+  query = "avg(last_5m):(avg:azure.storage_storageaccounts_fileservices.file_capacity{*} by {name} / avg:azure.storage_storageaccounts_fileservices.file_share_capacity_quota{*} by {name}) * 100 > 90"
+
+  include_tags        = false
+  notify_no_data      = false
+  notify_audit        = false
+  timeout_h           = 0
+  renotify_interval   = 0
+  new_group_delay     = 300
+  require_full_window = true
+
+  monitor_thresholds {
+    critical = 90
+    warning  = 80
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
+
 resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
