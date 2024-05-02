@@ -47,3 +47,28 @@ resource "datadog_synthetics_test" "plugin_health_scoring_probes" {
 
   status = "live"
 }
+
+resource "datadog_synthetics_test" "plugin_health_scoring_report" {
+  type = "api"
+  request_definition {
+    method = "GET"
+    url    = "https://reports.jenkins.io/plugin-health-scoring/scores.json"
+  }
+  assertion {
+    type     = "body"
+    operator = "contains"
+    target   = "lastUpdate"
+  }
+  locations = ["aws:eu-central-1"]
+  options_list {
+    tick_every = 900
+  }
+  name    = "plugin-health.jenkins.io-report"
+  message = "Notify @pagerduty"
+  tags = [
+    "jenkins.io",
+    "production"
+  ]
+
+  status = "live"
+}
