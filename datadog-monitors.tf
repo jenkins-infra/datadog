@@ -172,7 +172,7 @@ resource "datadog_monitor" "weird_response_time" {
 {{^is_warning}}@pagerduty{{/is_warning}}
 EOT
 
-  query = "avg(last_5m):exclude_null(max:network.http.response_time{!cluster_name:prodpublick8s,!url:https://rating.jenkins.io,production} by {url,cluster_name}) > 5"
+  query = "avg(last_5m):exclude_null(max:network.http.response_time{cluster_name:publick8s,!url:https://rating.jenkins.io,production} by {url,cluster_name}) > 5"
 
   notify_audit        = false
   timeout_h           = 0
