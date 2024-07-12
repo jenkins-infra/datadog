@@ -1,26 +1,15 @@
-parallel(
-  failFast: false,
-  'terraform': {
-    terraform(
-      stagingCredentials: [
-        // TODO: create an empty account for staging
-        string(variable: 'TF_VAR_datadog_api_key', credentialsId: 'datadog-api-key'),
-        string(variable: 'TF_VAR_datadog_app_key', credentialsId: 'datadog-app-key'),
-        string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
-        file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
-      ],
-      productionCredentials: [
-        string(variable: 'TF_VAR_datadog_api_key', credentialsId: 'datadog-api-key'),
-        string(variable: 'TF_VAR_datadog_app_key', credentialsId: 'datadog-app-key'),
-        string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
-        file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
-      ],
-    )
-  },
-  'updatecli': {
-    updatecli(action: 'diff')
-    if (env.BRANCH_IS_PRIMARY) {
-      updatecli(action: 'apply', cronTriggerExpression: '@daily')
-    }
-  },
+terraform(
+  stagingCredentials: [
+    // TODO: create an empty account for staging
+    string(variable: 'TF_VAR_datadog_api_key', credentialsId: 'datadog-api-key'),
+    string(variable: 'TF_VAR_datadog_app_key', credentialsId: 'datadog-app-key'),
+    string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
+    file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
+  ],
+  productionCredentials: [
+    string(variable: 'TF_VAR_datadog_api_key', credentialsId: 'datadog-api-key'),
+    string(variable: 'TF_VAR_datadog_app_key', credentialsId: 'datadog-app-key'),
+    string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
+    file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
+  ],
 )
