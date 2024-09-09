@@ -1,3 +1,8 @@
+if (env.BRANCH_IS_PRIMARY) {
+    // Only trigger a daily check on the principal branch
+    properties([pipelineTriggers([cron('@daily')])])
+}
+
 terraform(
   stagingCredentials: [
     // TODO: create an empty account for staging
@@ -12,4 +17,5 @@ terraform(
     string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
     file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
   ],
+  publishReports: ['jenkins-infra-data-reports/datadog.json'],
 )
