@@ -17,5 +17,4 @@ terraform(
     string(variable: 'TF_VAR_datadog_jenkinsuser_password', credentialsId: 'datadog-jenkinsuser-password'),
     file(variable: 'BACKEND_CONFIG_FILE', credentialsId: 'production-terraform-datadog-backend-config'),
   ],
-  publishReports: ['jenkins-infra-data-reports/datadog.json'],
 )
