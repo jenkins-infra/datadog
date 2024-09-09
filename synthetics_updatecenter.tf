@@ -11,7 +11,8 @@ resource "datadog_synthetics_test" "updates_jenkins_io" {
   }
   locations = ["aws:eu-central-1"]
   options_list {
-    tick_every = 900
+    tick_every       = 900
+    follow_redirects = true
   }
   name    = "updates.jenkins.io"
   message = "Notify @pagerduty"
@@ -36,7 +37,8 @@ resource "datadog_synthetics_test" "updates_jenkinsci_org" {
   }
   locations = ["aws:eu-central-1"]
   options_list {
-    tick_every = 900
+    tick_every       = 900
+    follow_redirects = true
   }
   name    = "updates.jenkins-ci.org"
   message = "Notify @pagerduty"
