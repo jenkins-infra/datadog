@@ -356,15 +356,15 @@ resource "datadog_logs_custom_pipeline" "mirrorbits_logs" {
         # IMPORTANT: Escape '%%{}' datadog syntax as it is also Terraform template directive
         # https://developer.hashicorp.com/terraform/language/expressions/strings#escape-sequences-1
         match_rules = <<-EOT
-          parseMirrorbitsAccessLog %%%{date("yyyy/MM/dd HH:mm:ss.SSSSSS"):date}\s+%%%{word:request_result}\s+%%%{integer:http_status}\s+"%%%{notSpace:http_uri}"\s+%%%{data::keyvalue(":")}
+          parseMirrorbitsAccessLog %%{date("yyyy/MM/dd HH:mm:ss.SSSSSS"):date}\s+%%{word:request_result}\s+%%{integer:http_status}\s+"%%{notSpace:http_uri}"\s+%%{data::keyvalue(":")}
 
-          parseMirrorbitsScanLog %%%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%%{notSpace:http_uri}:\s+%%%{notSpace:hash_type}\s+%%%{notSpace:hash_value}
+          parseMirrorbitsScanLog %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:http_uri}:\s+%%{notSpace:hash_type}\s+%%{notSpace:hash_value}
 
-          parseMirrorbitsErrorLog %%%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+HTTP\s+%%%{notSpace:log_status:uppercase}:%%%{data:error_message}
+          parseMirrorbitsErrorLog %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+HTTP\s+%%{notSpace:log_status:uppercase}:%%{data:error_message}
 
-          parseMirrorbitHealthCheck %%%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%%{notSpace:mirror_id}\s+%%%{notSpace:mirror_status}!\s+\(%%%{notSpace:mirror_latency}\)
+          parseMirrorbitHealthCheck %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:mirror_id}\s+%%{notSpace:mirror_status}!\s+\(%%{notSpace:mirror_latency}\)
 
-          parseMirrorNodeEvent %%%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date} -> Node %%%{notSpace:node_id}\s+%%%{data:node_event}
+          parseMirrorNodeEvent %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date} -> Node %%{notSpace:node_id}\s+%%{data:node_event}
         EOT
       }
     }
