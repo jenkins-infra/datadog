@@ -21,6 +21,7 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_integration_pipeline.docker.id,
     datadog_logs_integration_pipeline.apache.id, # Yes, there is "Apache" and "Apache HTTPD" in the default Datadog integrations.
     datadog_logs_integration_pipeline.redis.id,
+    datadog_logs_integration_pipeline.ruby.id,
     datadog_logs_custom_pipeline.nginx_artifact_caching_proxy.id,
     datadog_logs_custom_pipeline.all_jenkins_infra_logs.id,
     datadog_logs_custom_pipeline.mirrorbits_logs.id,
@@ -55,6 +56,13 @@ resource "datadog_logs_integration_pipeline" "apache" {
   is_enabled = true
 }
 resource "datadog_logs_integration_pipeline" "redis" {
+  is_enabled = true
+}
+import {
+  to = datadog_logs_integration_pipeline.ruby
+  id = "Nx_rG0R4Sx6o97dFkOHMsQ"
+}
+resource "datadog_logs_integration_pipeline" "ruby" {
   is_enabled = true
 }
 
