@@ -9,6 +9,7 @@ locals {
     "/latest/zos-connector.hpi",
     "/download/plugins/zos-connector/3.257.v41e144167971/zos-connector.hpi",
     "/update-center.json?id=default&version=2.462.2",
+    "/latest",
   ]
 
   update_center_urls = [
