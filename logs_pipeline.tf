@@ -24,7 +24,9 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_integration_pipeline.ruby.id,
     datadog_logs_custom_pipeline.nginx_artifact_caching_proxy.id,
     datadog_logs_custom_pipeline.all_jenkins_infra_logs.id,
-    datadog_logs_custom_pipeline.mirrorbits_logs.id,
+    datadog_logs_custom_pipeline.mirrorbits_general_logs.id,
+    datadog_logs_custom_pipeline.mirrorbits_scan_mirrors_logs.id,
+    datadog_logs_custom_pipeline.mirrorbits_scan_repo_logs.id,
     datadog_logs_integration_pipeline.cloudflare.id,
   ]
 }
@@ -340,11 +342,11 @@ resource "datadog_logs_custom_pipeline" "all_jenkins_infra_logs" {
   }
 }
 ## Remap statuses of all logs from mirrorbits services
-resource "datadog_logs_custom_pipeline" "mirrorbits_logs" {
+resource "datadog_logs_custom_pipeline" "mirrorbits_general_logs" {
   filter {
     query = "source:mirrorbits"
   }
-  name       = "Mirrorbits logs"
+  name       = "Mirrorbits General Logs"
   is_enabled = true
 
   processor {
@@ -352,11 +354,9 @@ resource "datadog_logs_custom_pipeline" "mirrorbits_logs" {
       is_enabled = true
       name       = "Log Level Status Parser"
       samples = [
-        "2024/08/17 17:37:43.909 UTC /download/plugins/snakeyaml-api/index.html: MD5 d499f56fc98d7a5fe1e9e3ecce8b4c4f",
         "2024/08/17 18:15:56.500 UTC -> Node updates-jenkins-io-mirrorbits-7c6bd54c84-gbxsh-27545 joined the cluster",
         "2024/08/17 17:53:43.921 UTC HTTP error: write tcp 10.100.4.4:8080->10.100.4.1:36706: write: broken pipe",
         "2024/08/17 18:16:16.409999 REDIRECT 302 \"/current/update-center.actual.json\" ip:89.84.210.161 mirror:westeurope asn:13335 distance:394.04km countries:FR",
-        "2024/08/17 18:15:56.839 UTC eastamerica    Up! (305ms)",
       ]
       source = "message"
 
@@ -367,11 +367,7 @@ resource "datadog_logs_custom_pipeline" "mirrorbits_logs" {
         match_rules = <<-EOT
           parseMirrorbitsAccessLog %%{date("yyyy/MM/dd HH:mm:ss.SSSSSS"):date}\s+%%{word:request_result}\s+%%{integer:http_status}\s+"%%{notSpace:http_uri}"\s+%%{data::keyvalue(":")}
 
-          parseMirrorbitsScanLog %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:http_uri}:\s+%%{notSpace:hash_type}\s+%%{notSpace:hash_value}
-
           parseMirrorbitsErrorLog %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+HTTP\s+%%{notSpace:log_status:uppercase}:%%{data:error_message}
-
-          parseMirrorbitHealthCheck %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:mirror_id}\s+%%{notSpace:mirror_status}!\s+\(%%{notSpace:mirror_latency}\)
 
           parseMirrorNodeEvent %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date} -> Node %%{notSpace:node_id}\s+%%{data:node_event}
         EOT
@@ -388,7 +384,126 @@ resource "datadog_logs_custom_pipeline" "mirrorbits_logs" {
         name = "INFO"
 
         filter {
-          query = "@mirror_status:Up OR @request_result:REDIRECT OR @hash_type:*"
+          query = "@request_result:REDIRECT"
+        }
+      }
+    }
+  }
+  processor {
+    status_remapper {
+      is_enabled = true
+      name       = "Status Remapper: Custom Status"
+      sources = [
+        "log_level",
+      ]
+    }
+  }
+}
+
+resource "datadog_logs_custom_pipeline" "mirrorbits_scan_mirrors_logs" {
+  filter {
+    query = "source:mirrorbits"
+  }
+  name       = "Mirrorbits Scan Mirrors Logs"
+  is_enabled = true
+
+  processor {
+    grok_parser {
+      is_enabled = true
+      name       = "Log Level Status Parser"
+      samples = [
+        "2024/08/17 18:15:56.839 UTC eastamerica    Up! (305ms)",
+        "2024/11/19 15:59:56.628 UTC [westeurope] Requesting file list via rsync...",
+        "2024/11/19 15:59:57.235 UTC [westeurope] Indexed 208 files (208 known), 0 removed",
+        "2024/11/19 15:55:14.728 UTC [sg.mirror.servanamanaged.com] Indexed 42241 files (42235 known), 0 removed",
+        "2024/11/19 15:54:33.028 UTC [source] Scanning the filesystem...",
+      ]
+      source = "message"
+
+      grok {
+        support_rules = ""
+        # IMPORTANT: Escape '%%{}' datadog syntax as it is also Terraform template directive
+        # https://developer.hashicorp.com/terraform/language/expressions/strings#escape-sequences-1
+        match_rules = <<-EOT
+          parseMirrorbitsMirrorHealthCheck %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:mirror_id}\s+%%{notSpace:mirror_status}!\s+\(%%{notSpace:mirror_latency}\)
+
+          parseMirrorbitsMirrorScanStart %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+\[%%{notSpace:mirror_id}\] Requesting file list via %%{word:scan_protocol}...
+
+          parseMirrorbitsMirrorScanEnd %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+\[%%{notSpace:mirror_id}\] Indexed %%{integerStr:scan_total_files} files \(%%{integerStr:scan_known_files} known\), %%{integerStr:scan_removed_files} removed
+        EOT
+      }
+    }
+  }
+  processor {
+    category_processor {
+      is_enabled = true
+      name       = "Define Status"
+      target     = "log_level"
+
+      category {
+        name = "INFO"
+
+        filter {
+          query = "@mirror_id:* -@mirror_id:source"
+        }
+      }
+    }
+  }
+  processor {
+    status_remapper {
+      is_enabled = true
+      name       = "Status Remapper: Custom Status"
+      sources = [
+        "log_level",
+      ]
+    }
+  }
+}
+
+resource "datadog_logs_custom_pipeline" "mirrorbits_scan_repo_logs" {
+  filter {
+    query = "source:mirrorbits"
+  }
+  name       = "Mirrorbits Scan Repository Logs"
+  is_enabled = true
+
+  processor {
+    grok_parser {
+      is_enabled = true
+      name       = "Log Level Status Parser"
+      samples = [
+        "2024/08/17 17:37:43.909 UTC /download/plugins/snakeyaml-api/index.html: MD5 d499f56fc98d7a5fe1e9e3ecce8b4c4f",
+        "2024/11/19 15:54:33.028 UTC [source] Scanning the filesystem...",
+        "2024/11/19 15:54:33.027 UTC [source] Scanned 51216 files",
+        "2024/11/19 15:54:32.160 UTC [source] Indexing the files...",
+      ]
+      source = "message"
+
+      grok {
+        support_rules = ""
+        # IMPORTANT: Escape '%%{}' datadog syntax as it is also Terraform template directive
+        # https://developer.hashicorp.com/terraform/language/expressions/strings#escape-sequences-1
+        match_rules = <<-EOT
+          parseMirrorbitsScanRepoIndexedFile %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date}\s+%%{notSpace:http_uri}:\s+%%{notSpace:hash_type}\s+%%{notSpace:hash_value}
+
+          parseMirrorbitsScanRepoFilesystemStart %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date} \[source\] %%{data:scan_repo_action}\.\.\.
+
+          parseMirrorbitsScanRepoFilesystemEnd %%{date("yyyy/MM/dd HH:mm:ss.SSS z"):date} \[source\] Scanned %%{integerStr:scan_repo_total_files} files
+        EOT
+      }
+    }
+  }
+  processor {
+    category_processor {
+      is_enabled = true
+      name       = "Define Status"
+      target     = "log_level"
+
+      category {
+        name = "INFO"
+
+        filter {
+          query = "@hash_type:* OR @scan_repo_action:* OR @scan_repo_total_files:*"
         }
       }
     }
