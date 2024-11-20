@@ -65,8 +65,7 @@ resource "datadog_logs_integration_pipeline" "ruby" {
   is_enabled = true
 }
 resource "datadog_logs_integration_pipeline" "cloudflare" {
-  # Default integration expectes 'source: cloudflare' which is not the case (see below)
-  is_enabled = false
+  is_enabled = true
 }
 
 ## TODO: describe the intent of this pipeline (remap status? Check request caching status? Other?)
