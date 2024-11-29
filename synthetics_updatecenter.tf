@@ -5,11 +5,19 @@ locals {
     "/",
     "/index.html",
     "/update-center.json",
+    "/current",
+    "/current/",
     "/current/update-center.json",
     "/latest/zos-connector.hpi",
     "/download/plugins/zos-connector/3.257.v41e144167971/zos-connector.hpi",
     "/update-center.json?id=default&version=2.462.2",
+    "/updates",
+    "/updates/",
+    "/updates/hudson.tasks.Maven.MavenInstaller.json",
+    "/current/updates",
+    "/current/updates/",
     "/latest",
+    "/latest/",
   ]
 
   update_center_urls = [
