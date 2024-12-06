@@ -55,9 +55,9 @@ resource "datadog_synthetics_test" "plugin_health_scoring_report" {
     url    = "https://reports.jenkins.io/plugin-health-scoring/scores.json"
   }
   assertion {
-    type     = "body"
-    operator = "contains"
-    target   = "lastUpdate"
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
   }
   locations = ["aws:eu-central-1"]
   options_list {
