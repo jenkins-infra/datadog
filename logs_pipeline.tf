@@ -28,6 +28,8 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_custom_pipeline.mirrorbits_scan_mirrors_logs.id,
     datadog_logs_custom_pipeline.mirrorbits_scan_repo_logs.id,
     datadog_logs_integration_pipeline.cloudflare.id,
+    datadog_logs_integration_pipeline.keycloak.id,
+    datadog_logs_integration_pipeline.falco.id,
   ]
 }
 
@@ -65,6 +67,12 @@ resource "datadog_logs_integration_pipeline" "ruby" {
   is_enabled = true
 }
 resource "datadog_logs_integration_pipeline" "cloudflare" {
+  is_enabled = true
+}
+resource "datadog_logs_integration_pipeline" "keycloak" {
+  is_enabled = true
+}
+resource "datadog_logs_integration_pipeline" "falco" {
   is_enabled = true
 }
 
