@@ -13,9 +13,10 @@ resource "datadog_synthetics_test" "plugin_health_scoring" {
     type = "body"
     operator = "validatesJSONPath"
     targetjsonpath {
-      jsonpath    = "$.status"      
-      operator    = "is"
-      targetvalue = "UP"
+      jsonpath         = "$.status"      
+      operator         = "is"
+      elementsoperator = "firstElementMatches"
+      targetvalue      = "UP"
     }
   }
   locations = ["aws:eu-central-1"]
