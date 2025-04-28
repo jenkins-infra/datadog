@@ -7,7 +7,7 @@ resource "datadog_synthetics_test" "plugin_health_scoring" {
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "302"
+    target   = "200"
   }
   locations = ["aws:eu-central-1"]
   options_list {
