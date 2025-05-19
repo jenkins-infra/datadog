@@ -10,10 +10,10 @@ resource "datadog_synthetics_test" "plugin_health_scoring" {
     target   = "200"
   }
   assertion {
-    type = "body"
+    type     = "body"
     operator = "validatesJSONPath"
     targetjsonpath {
-      jsonpath         = "$.status"      
+      jsonpath         = "$.status"
       operator         = "is"
       elementsoperator = "firstElementMatches"
       targetvalue      = "UP"
