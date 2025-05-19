@@ -76,10 +76,6 @@ resource "datadog_logs_integration_pipeline" "keycloak" {
 resource "datadog_logs_integration_pipeline" "falco" {
   is_enabled = true
 }
-import {
-  to = datadog_logs_integration_pipeline.openvpn
-  id = "Hotm_CQBQZKLdVjCwnq8fw"
-}
 resource "datadog_logs_integration_pipeline" "openvpn" {
   is_enabled = true
 }
