@@ -31,6 +31,9 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_integration_pipeline.keycloak.id,
     datadog_logs_integration_pipeline.falco.id,
     datadog_logs_integration_pipeline.openvpn.id,
+    datadog_logs_integration_pipeline.nodejs.id,
+    datadog_logs_integration_pipeline.java.id,
+    datadog_logs_integration_pipeline.openldap.id,
   ]
 }
 
@@ -79,6 +82,28 @@ resource "datadog_logs_integration_pipeline" "falco" {
 resource "datadog_logs_integration_pipeline" "openvpn" {
   is_enabled = true
 }
+import {
+  to = datadog_logs_integration_pipeline.nodejs
+  id = "rARfJV2zTjKiuLLBwUMJMg"
+}
+resource "datadog_logs_integration_pipeline" "nodejs" {
+  is_enabled = true
+}
+import {
+  to = datadog_logs_integration_pipeline.java
+  id = "hMHrEqCwSmaIOMKsYElFdg"
+}
+resource "datadog_logs_integration_pipeline" "java" {
+  is_enabled = true
+}
+import {
+  to = datadog_logs_integration_pipeline.openldap
+  id = "YZuNmGVbRGer7u0hItN0Yw"
+}
+resource "datadog_logs_integration_pipeline" "openldap" {
+  is_enabled = true
+}
+
 
 ## TODO: describe the intent of this pipeline (remap status? Check request caching status? Other?)
 resource "datadog_logs_custom_pipeline" "nginx_artifact_caching_proxy" {
