@@ -82,23 +82,11 @@ resource "datadog_logs_integration_pipeline" "falco" {
 resource "datadog_logs_integration_pipeline" "openvpn" {
   is_enabled = true
 }
-import {
-  to = datadog_logs_integration_pipeline.nodejs
-  id = "rARfJV2zTjKiuLLBwUMJMg"
-}
 resource "datadog_logs_integration_pipeline" "nodejs" {
   is_enabled = true
 }
-import {
-  to = datadog_logs_integration_pipeline.java
-  id = "hMHrEqCwSmaIOMKsYElFdg"
-}
 resource "datadog_logs_integration_pipeline" "java" {
   is_enabled = true
-}
-import {
-  to = datadog_logs_integration_pipeline.openldap
-  id = "YZuNmGVbRGer7u0hItN0Yw"
 }
 resource "datadog_logs_integration_pipeline" "openldap" {
   is_enabled = true
