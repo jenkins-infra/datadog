@@ -77,15 +77,14 @@ resource "datadog_synthetics_test" "updates_center_http_to_https" {
     type     = "header"
     property = "location"
     operator = "is"
-    target   = format("https://%s", each.key)
+    target   = trimsuffix(format("https://%s", each.key), "/") # Redirection to the same URL but without trailing slashes
   }
   locations = ["aws:eu-central-1"]
   options_list {
     tick_every = 900
   }
   name = each.key
-  ## TODO: uncomment to enable alerting
-  # message = "Notify @pagerduty"
+  message = "Notify @pagerduty"
   tags = [
     each.value,
     "production"
