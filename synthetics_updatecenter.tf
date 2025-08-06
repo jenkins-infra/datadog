@@ -21,8 +21,8 @@ locals {
 
   update_center_urls = [
     for duet in setproduct(local.update_center_hosts, local.update_center_uris) : {
-      hostname = triplet[0]
-      uri      = triplet[1]
+      hostname = duet[0]
+      uri      = duet[1]
     }
   ]
 }
