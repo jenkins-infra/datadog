@@ -46,7 +46,7 @@ resource "datadog_synthetics_test" "updates_center" {
   locations = [
     "aws:eu-central-1",
     "aws:us-east-2",
-    "azure:USEast2",
+    "azure:eastus",
   ]
   options_list {
     tick_every       = 60
@@ -87,7 +87,11 @@ resource "datadog_synthetics_test" "updates_center_http_to_https" {
     operator = "is"
     target   = trimsuffix(format("https://%s", each.key), "/") # Redirection to the same URL but without trailing slashes
   }
-  locations = ["aws:eu-central-1"]
+  locations = [
+    "aws:eu-central-1",
+    "aws:us-east-2",
+    "azure:eastus",
+  ]
   options_list {
     tick_every = 900
     retry {
