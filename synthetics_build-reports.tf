@@ -23,7 +23,7 @@ resource "datadog_synthetics_test" "docker_404" {
     }
   }
   name    = "docker-404 build status"
-  message = "Notify @pagerduty"
+  # message = "Notify @pagerduty"
   tags    = ["production", "jenkins-infra", "docker-404"]
   status = "live"
 }
