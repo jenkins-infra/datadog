@@ -10,9 +10,13 @@ resource "datadog_synthetics_test" "docker_404" {
     target   = "200"
   }
   assertion {
-    type     = "body"
-    operator = "contains"
-    target   = "\"build_status\":\"SUCCESS\""
+  type     = "body"
+  operator = "validatesJSONPath"
+  targetjsonpath {
+    jsonpath    = "$.build_status"
+    operator    = "is"
+    targetvalue = "SUCCESS"
+    }
   }
   locations = ["aws:eu-central-1"]
   options_list {
