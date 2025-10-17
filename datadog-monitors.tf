@@ -177,7 +177,7 @@ EOT
   notify_audit        = false
   timeout_h           = 0
   include_tags        = false
-  notify_no_data      = true
+  notify_no_data      = false
   no_data_timeframe   = 10
   renotify_interval   = 720
   new_group_delay     = 300
