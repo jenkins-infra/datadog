@@ -139,7 +139,7 @@ resource "datadog_monitor" "ssl_certificate_expiration" {
   name    = "SSL certificate expiring soon for {{url}}"
   type    = "metric alert"
   message = <<EOT
-SSL certificate expiring soon for {{url}}, you should take a looksee. {{^is_warning}}@pagerduty{{/is_warning}}
+SSL certificate expiring soon for {{url}}, you should take a look. {{^is_warning}}@pagerduty{{/is_warning}}
 EOT
 
   query = "max(last_15m):min:http.ssl.days_left{production} by {url} <= 5"
@@ -147,7 +147,7 @@ EOT
   notify_audit        = false
   timeout_h           = 0
   include_tags        = false
-  notify_no_data      = true
+  notify_no_data      = false
   no_data_timeframe   = 10
   renotify_interval   = 0
   new_group_delay     = 300
