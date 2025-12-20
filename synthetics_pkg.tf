@@ -23,12 +23,11 @@ resource "datadog_synthetics_test" "pkg_jenkins_io" {
   status = "live"
 }
 
-## Do not monitor https
 resource "datadog_synthetics_test" "pkg_jenkinsci_org" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "http://pkg.jenkins-ci.org"
+    url    = "https://pkg.jenkins-ci.org"
   }
   assertion {
     type     = "statusCode"

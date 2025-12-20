@@ -10,12 +10,12 @@ resource "datadog_synthetics_test" "docker_404" {
     target   = "200"
   }
   assertion {
-  type     = "body"
-  operator = "validatesJSONPath"
-  targetjsonpath {
-    jsonpath    = "$.build_status"
-    operator    = "is"
-    targetvalue = "SUCCESS"
+    type     = "body"
+    operator = "validatesJSONPath"
+    targetjsonpath {
+      jsonpath    = "$.build_status"
+      operator    = "is"
+      targetvalue = "SUCCESS"
     }
   }
   locations = ["aws:eu-central-1"]
@@ -26,8 +26,8 @@ resource "datadog_synthetics_test" "docker_404" {
       interval = 300
     }
   }
-  name    = "docker-404 build status"
+  name = "docker-404 build status"
   # message = "Notify @pagerduty"
-  tags    = ["production", "jenkins-infra", "docker-404"]
+  tags   = ["production", "jenkins-infra", "docker-404"]
   status = "live"
 }

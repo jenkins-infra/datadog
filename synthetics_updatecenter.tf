@@ -99,7 +99,7 @@ resource "datadog_synthetics_test" "updates_center_http_to_https" {
       interval = 900
     }
   }
-  name = each.key
+  name    = each.key
   message = "Notify @pagerduty"
   tags = [
     each.value,
