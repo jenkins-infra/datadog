@@ -1,13 +1,13 @@
-resource "datadog_synthetics_test" "docs_jenkins_io" {
+resource "datadog_synthetics_test" "alpha_docs_jenkins_io" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "https://docs.jenkins.io"
+    url    = "https://alpha.docs.jenkins.io"
   }
   assertion {
     type     = "statusCode"
     operator = "is"
-    target   = "302"
+    target   = "200"
   }
   locations = ["aws:eu-central-1"]
   options_list {
@@ -18,7 +18,7 @@ resource "datadog_synthetics_test" "docs_jenkins_io" {
       interval = 300
     }
   }
-  name    = "docs.jenkins.io"
+  name    = "alpha.docs.jenkins.io"
   message = "Notify @pagerduty"
   tags = [
     "jenkins.io",
