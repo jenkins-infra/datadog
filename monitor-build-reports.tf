@@ -40,7 +40,5 @@ resource "datadog_monitor" "build_report_stale" {
     critical_recovery = 20
   }
 
-  tags = ["terraformed:true", "service:build-reports"]
+  tags = ["terraformed:true", "*"]
 }
-
-
