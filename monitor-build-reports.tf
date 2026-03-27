@@ -13,6 +13,9 @@ resource "datadog_monitor" "build_report_stale" {
 
     - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over 24 hours
     - Check the job on the private controller
+    - Job URL: https://{{ controller.name }}/job/{{ job.name }}
+    - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
+
     - https://github.com/jenkins-infra/helpdesk/issues/2843
 
     {{/is_alert}}
@@ -26,7 +29,7 @@ resource "datadog_monitor" "build_report_stale" {
     Notify: @pagerduty
   EOT
 
-  query               = "avg(last_1h):avg:jenkins.build_report.age_hours{*} by {controller,job} > 24"
+  query               = "avg(last_1h):avg:jenkins.build_report.stale{*} by {controller,job} > 0"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
@@ -35,9 +38,7 @@ resource "datadog_monitor" "build_report_stale" {
   require_full_window = false
 
   monitor_thresholds {
-    warning           = 18
-    critical          = 24
-    critical_recovery = 20
+    critical          = 0
   }
 
   tags = ["terraformed:true", "*"]
