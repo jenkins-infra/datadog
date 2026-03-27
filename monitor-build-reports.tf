@@ -6,7 +6,7 @@
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
 resource "datadog_monitor" "build_report_stale" {
-  name    = "Build report {{ job.name }} on {{ controller.name }} is stale (>24h)"
+  name    = "Build report {{ job.name }} on {{ controller.name }} is stale"
   type    = "query alert"
   message = <<-EOT
     {{#is_alert}}
