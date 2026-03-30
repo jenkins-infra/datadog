@@ -5,13 +5,20 @@
 #
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
+locals {
+  build_report_jobs = yamldecode(file("${path.module}/build-report-jobs.yaml")).build_report_jobs
+}
+
 resource "datadog_monitor" "build_report_stale" {
-  name    = "Build report {{ job.name }} on {{ controller.name }} is stale"
-  type    = "query alert"
+  for_each = local.build_report_jobs
+
+  name = "Build report ${each.value.job} on ${each.value.controller} is stale"
+  type = "query alert"
+
   message = <<-EOT
     {{#is_alert}}
 
-    - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over {{ jenkins.build_report.threshold_in_hours }} hour(s)
+    - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over {{ threshold_hours.name }} hour(s)
     - Check the job on the private controller {{ controller.name }}
     - Job URL: https://{{ controller.name }}/job/{{ job.name }}
     - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
@@ -29,7 +36,8 @@ resource "datadog_monitor" "build_report_stale" {
     Notify: @pagerduty
   EOT
 
-  query               = "avg(last_1h):avg:jenkins.build_report.stale{*} by {controller,job} > 0"
+# Alert if any check in the last 5m reports stale (>=1) for this specific controller+job
+  query               = "max(last_5m):avg:jenkins.build_report.stale{controller:${each.value.controller},job:${each.value.job}} >= 1"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
@@ -39,7 +47,7 @@ resource "datadog_monitor" "build_report_stale" {
   draft_status        = "draft"
 
   monitor_thresholds {
-    critical          = 0
+    critical = 1
   }
 
   tags = ["terraformed:true", "*"]
