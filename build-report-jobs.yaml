@@ -1,5 +1,4 @@
 # Build report jobs to monitor for staleness
-# Flat structure - each job is explicit with its controller and threshold
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
 build_report_jobs:
