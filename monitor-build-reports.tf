@@ -18,7 +18,7 @@ resource "datadog_monitor" "build_report_stale" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over {{ threshold_hours.name }} hour(s)
+    - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over {{ threshold_in_hours.name }} hour(s)
     - Check the job on the private controller {{ controller.name }}
     - Job URL: https://{{ controller.name }}/job/{{ job.name }}
     - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
