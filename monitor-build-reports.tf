@@ -42,7 +42,7 @@ resource "datadog_monitor" "build_report_stale" {
   timeout_h           = 0
   no_data_timeframe   = 120
   renotify_interval   = 60
-  new_group_delay     = 300
+  # new_group_delay     = 300
   require_full_window = false
   draft_status        = "draft"
 
