@@ -77,6 +77,7 @@ resource "datadog_monitor" "build_report_unreachable" {
     Notify: @pagerduty
   EOT
 
+  # Alert if the report endpoint was unreachable for all checks in the last 5m
   query               = "min(last_5m):avg:jenkins.build_report.reachable{controller:${each.value.controller},job:${each.value.job}} < 1"
   notify_audit        = false
   timeout_h           = 0
@@ -118,6 +119,7 @@ resource "datadog_monitor" "build_report_unhealthy" {
     Notify: @pagerduty
   EOT
 
+  # Alert if any check in the last 5m reports a non-SUCCESS build status
   query               = "max(last_5m):avg:jenkins.build_report.build_ok{controller:${each.value.controller},job:${each.value.job}} < 1"
   notify_audit        = false
   timeout_h           = 0
