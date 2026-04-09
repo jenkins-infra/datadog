@@ -42,7 +42,89 @@ resource "datadog_monitor" "build_report_stale" {
   timeout_h           = 0
   no_data_timeframe   = 120
   renotify_interval   = 60
-  # new_group_delay     = 300
+  require_full_window = false
+  draft_status        = "draft"
+
+  monitor_thresholds {
+    critical = 1
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
+resource "datadog_monitor" "build_report_unreachable" {
+  for_each = local.build_report_jobs
+
+  name = "Build report ${each.value.job} on ${each.value.controller} is unreachable"
+  type = "query alert"
+
+  message = <<-EOT
+    {{#is_alert}}
+
+    - The build report endpoint for {{ job.name }} on {{ controller.name }} is unreachable
+    - Report URL: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
+
+    - https://github.com/jenkins-infra/helpdesk/issues/2843
+
+    {{/is_alert}}
+
+    {{#is_recovery}}
+
+    - Build report endpoint for {{ job.name }} on {{ controller.name }} is reachable again
+
+    {{/is_recovery}}
+
+    Notify: @pagerduty
+  EOT
+
+  # Alert if the report endpoint was unreachable for all checks in the last 5m
+  query               = "min(last_5m):avg:jenkins.build_report.reachable{controller:${each.value.controller},job:${each.value.job}} < 1"
+  notify_audit        = false
+  timeout_h           = 0
+  no_data_timeframe   = 120
+  renotify_interval   = 60
+  require_full_window = false
+  draft_status        = "draft"
+
+  monitor_thresholds {
+    critical = 1
+  }
+
+  tags = ["terraformed:true", "*"]
+}
+
+resource "datadog_monitor" "build_report_failing" {
+  for_each = local.build_report_jobs
+
+  name = "Build report ${each.value.job} on ${each.value.controller} is failing"
+  type = "query alert"
+
+  message = <<-EOT
+    {{#is_alert}}
+
+    - The last build for {{ job.name }} on {{ controller.name }} is failing
+    - Job URL: https://{{ controller.name }}/job/{{ job.name }}
+    - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
+
+    - https://github.com/jenkins-infra/helpdesk/issues/2843
+
+    {{/is_alert}}
+
+    {{#is_recovery}}
+
+    - Build for {{ job.name }} on {{ controller.name }} is healthy again
+
+    {{/is_recovery}}
+
+    Notify: @pagerduty
+  EOT
+
+  # Alert if any check in the last 5m reports a non-SUCCESS build status
+  query               = "max(last_5m):avg:jenkins.build_report.build_ok{controller:${each.value.controller},job:${each.value.job}} < 1"
+  notify_audit        = false
+  timeout_h           = 0
+  no_data_timeframe   = 120
+  renotify_interval   = 60
   require_full_window = false
   draft_status        = "draft"
 
