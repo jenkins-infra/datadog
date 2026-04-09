@@ -61,7 +61,7 @@ resource "datadog_monitor" "build_report_unreachable" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The build report endpoint for {{ job.name }} on {{ controller.name }} is not responding
+    - The build report endpoint for {{ job.name }} on {{ controller.name }} is unreachable
     - Report URL: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
 
     - https://github.com/jenkins-infra/helpdesk/issues/2843
@@ -93,7 +93,7 @@ resource "datadog_monitor" "build_report_unreachable" {
   tags = ["terraformed:true", "*"]
 }
 
-resource "datadog_monitor" "build_report_unhealthy" {
+resource "datadog_monitor" "build_report_failing" {
   for_each = local.build_report_jobs
 
   name = "Build report ${each.value.job} on ${each.value.controller} is failing"
@@ -102,7 +102,7 @@ resource "datadog_monitor" "build_report_unhealthy" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The last build for {{ job.name }} on {{ controller.name }} is not SUCCESS
+    - The last build for {{ job.name }} on {{ controller.name }} is failing
     - Job URL: https://{{ controller.name }}/job/{{ job.name }}
     - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
 
