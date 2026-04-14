@@ -44,7 +44,7 @@ resource "datadog_monitor" "disk_space" {
 resource "datadog_monitor" "disk_space_ephemeral_agents" {
   name    = "Disk space is above {{ value }}% used for ephemeral agent {{host.name}}"
   type    = "query alert"
-  message = "{{^is_warning}}@pagerduty{{/is_warning}}"
+  message = "Disk space is above {{ value }}% used for ephemeral agent {{host.name}}"
 
   query               = "avg(last_5m):exclude_null(avg:system.disk.in_use{!device:tmpfs,!device:cgroup,!device:udev,!device:shm,!device:cgmfs,!label:UEFI,!label:uefi,!device:/dev/loop*,jenkins_agent_type:ephemeral_*} by {host,device}) * 100 > 95"
   include_tags        = false
