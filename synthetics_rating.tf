@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "ratingjenkinsio" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "https://rating.jenkins.io/rate/result.php"
+    url    = "https://rating.jenkins.io/healthcheck.php"
   }
   assertion {
     type     = "statusCode"
