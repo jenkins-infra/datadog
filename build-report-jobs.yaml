@@ -10,42 +10,6 @@ build_report_jobs:
     controller: infra.ci.jenkins.io
     job: acceptance-tests/acceptance-tests/check-agent-availability
     threshold_minutes: 1440
-  docker-confluence-data:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-confluence-data/main
-    threshold_minutes: 1440
-  docker-geoipupdate:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-geoipupdate/main
-    threshold_minutes: 1440
-  docker-jenkins-infraci:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-jenkins-infraci/main
-    threshold_minutes: 1440
-  docker-jenkins-lts:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-jenkins-lts/main
-    threshold_minutes: 1440
-  docker-jenkins-weeklyci:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-jenkins-weeklyci/main
-    threshold_minutes: 1440
-  docker-openvpn:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-openvpn/main
-    threshold_minutes: 1440
-  docker-packaging:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/docker-packaging/main
-    threshold_minutes: 1440
-  plugin-health-scoring:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/plugin-health-scoring/main
-    threshold_minutes: 1440
-  rating:
-    controller: infra.ci.jenkins.io
-    job: docker-jobs/rating/master
-    threshold_minutes: 1440
   kubernetes-management:
     controller: infra.ci.jenkins.io
     job: kubernetes-jobs/kubernetes-management/main
@@ -81,4 +45,8 @@ build_report_jobs:
   release-infra-agents-health:
     controller: release.ci.jenkins.io
     job: infra-agents-health
+    threshold_minutes: 1440
+  cert-acceptance-tests:
+    controller: infra.ci.jenkins.io
+    job: acceptance-tests/acceptance-tests/check-agent-availability
     threshold_minutes: 1440
