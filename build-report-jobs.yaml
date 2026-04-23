@@ -46,7 +46,3 @@ build_report_jobs:
     controller: release.ci.jenkins.io
     job: infra-agents-health
     threshold_minutes: 1440
-  cert-acceptance-tests:
-    controller: infra.ci.jenkins.io
-    job: acceptance-tests/acceptance-tests/check-agent-availability
-    threshold_minutes: 1440
