@@ -43,7 +43,7 @@ resource "datadog_monitor" "build_report_stale" {
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  draft_status        = "draft"
+  draft_status        = lookup(each.value, "enable_alert", false) ? "" : "draft"
 
   monitor_thresholds {
     critical = 1
@@ -84,7 +84,7 @@ resource "datadog_monitor" "build_report_unreachable" {
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  draft_status        = "draft"
+  draft_status        = lookup(each.value, "enable_alert", false) ? "" : "draft"
 
   monitor_thresholds {
     critical = 1
