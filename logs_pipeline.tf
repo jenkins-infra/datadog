@@ -34,6 +34,7 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_integration_pipeline.nodejs.id,
     datadog_logs_integration_pipeline.java.id,
     datadog_logs_integration_pipeline.openldap.id,
+    datadog_logs_integration_pipeline.python.id,
   ]
 }
 
@@ -91,7 +92,14 @@ resource "datadog_logs_integration_pipeline" "java" {
 resource "datadog_logs_integration_pipeline" "openldap" {
   is_enabled = true
 }
+resource "datadog_logs_integration_pipeline" "python" {
+  is_enabled = true
+}
 
+import {
+  to = datadog_logs_integration_pipeline.python
+  id = "xRfcYyn6ScyP0YYroj7g1g"
+}
 
 ## TODO: describe the intent of this pipeline (remap status? Check request caching status? Other?)
 resource "datadog_logs_custom_pipeline" "nginx_artifact_caching_proxy" {
