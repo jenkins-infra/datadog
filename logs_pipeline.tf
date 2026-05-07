@@ -34,6 +34,7 @@ resource "datadog_logs_pipeline_order" "custom_order" {
     datadog_logs_integration_pipeline.nodejs.id,
     datadog_logs_integration_pipeline.java.id,
     datadog_logs_integration_pipeline.openldap.id,
+    datadog_logs_integration_pipeline.python.id,
   ]
 }
 
@@ -89,6 +90,9 @@ resource "datadog_logs_integration_pipeline" "java" {
   is_enabled = true
 }
 resource "datadog_logs_integration_pipeline" "openldap" {
+  is_enabled = true
+}
+resource "datadog_logs_integration_pipeline" "python" {
   is_enabled = true
 }
 
