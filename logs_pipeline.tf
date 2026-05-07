@@ -96,6 +96,10 @@ resource "datadog_logs_integration_pipeline" "python" {
   is_enabled = true
 }
 
+import {
+  to = datadog_logs_integration_pipeline.python
+  id = "xRfcYyn6ScyP0YYroj7g1g"
+}
 
 ## TODO: describe the intent of this pipeline (remap status? Check request caching status? Other?)
 resource "datadog_logs_custom_pipeline" "nginx_artifact_caching_proxy" {
