@@ -46,5 +46,5 @@ build_report_jobs:
   update-center:
     controller: trusted.ci.jenkins.io
     job: update_center
-    threshold_minutes: 10
+    threshold_minutes: 20
     enable_alert: true   # opt-in for publishing alerts
