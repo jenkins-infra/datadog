@@ -84,7 +84,7 @@ resource "datadog_monitor" "build_report_unreachable" {
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  draft_status        = lookup(each.value, "enable_alert", false) ? "published" : "draft"
+  draft_status        = lookup(each.value, "enable_alert", true) ? "published" : "draft"
 
   monitor_thresholds {
     critical = 1
