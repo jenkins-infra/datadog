@@ -12,11 +12,6 @@ build_report_jobs:
     job: kubernetes-jobs/kubernetes-management/main
     threshold_minutes: 1440
     enable_alert: true   # opt-in for publishing alerts
-  ## release.ci.jenkins.io jobs
-  acceptance-tests-release-ci:
-    controller: release.ci.jenkins.io
-    job: infra-agents-health
-    threshold_minutes: 1440
   terraform-azure:
     controller: infra.ci.jenkins.io
     job: terraform-jobs/azure/main
@@ -37,6 +32,11 @@ build_report_jobs:
     controller: infra.ci.jenkins.io
     job: terraform-jobs/terraform-aws-sponsorship/main
     threshold_minutes: 1440
+  ## release.ci.jenkins.io jobs
+  acceptance-tests-release-ci:
+    controller: release.ci.jenkins.io
+    job: infra-agents-health/master
+    threshold_minutes: 1440  # 1 day (1 build)
   ## trusted.ci.jenkins.io jobs
   acceptance-tests-trusted-ci:
     controller: trusted.ci.jenkins.io
