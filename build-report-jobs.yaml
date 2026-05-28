@@ -36,7 +36,7 @@ build_report_jobs:
   acceptance-tests-release-ci:
     controller: release.ci.jenkins.io
     job: infra-agents-health/master
-    threshold_minutes: 1440
+    threshold_minutes: 1440  # 1 day (1 build)
   ## trusted.ci.jenkins.io jobs
   acceptance-tests-trusted-ci:
     controller: trusted.ci.jenkins.io
