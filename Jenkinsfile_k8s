@@ -1,9 +1,5 @@
-if (env.BRANCH_IS_PRIMARY) {
-    // Only trigger a daily check on the principal branch
-    properties([pipelineTriggers([cron('@daily')])])
-}
-
 terraform(
+  cronTriggerExpression: env.BRANCH_IS_PRIMARY ? '@daily' : '',
   stagingCredentials: [
     string(variable: 'TF_VAR_datadog_api_key', credentialsId: 'staging-datadog-api-key'),
     string(variable: 'TF_VAR_datadog_app_key', credentialsId: 'staging-datadog-app-key'),
