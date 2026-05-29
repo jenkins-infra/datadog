@@ -7,7 +7,7 @@ resource "datadog_api_key" "certcijenkinsio_ephemeral_agents" {
 }
 
 resource "datadog_api_key" "cijenkinsio_ephemeral_agents" {
-  name = "Jenkins Agents for ci.jenkins.io (non Kubernetes)"
+  name = "ci.jenkins.io-ephemeral-agents-20260529"
 }
 
 resource "datadog_api_key" "cijenkinsio_agents_2" {
