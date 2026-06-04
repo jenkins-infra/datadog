@@ -67,3 +67,8 @@ build_report_jobs:
     job: update_center
     threshold_minutes: 20  # (2 builds)
     enable_alert: true   # opt-in for publishing alerts
+  docs-jenkins-io:
+    controller: infra.ci.jenkins.io
+    job: website-production-jobs/docs.jenkins.io/main
+    threshold_minutes: 10
+    enable_alert: true
