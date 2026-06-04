@@ -1,0 +1,5 @@
+resource_group_name  = "tf-remote-state-datadog-production-cWZ5is"
+storage_account_name = "datadogproductioncwz5is"
+container_name       = "datadogproductioncwz5is"
+client_id            = "fe757a96-ab39-48f6-97a3-3c28ace22de4"
+# client_secret      = "" # Specified through the env. variable $TF_BACKEND_ARM_CLIENT_SECRET
