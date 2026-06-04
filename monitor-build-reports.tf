@@ -36,7 +36,7 @@ resource "datadog_monitor" "build_report_stale" {
     Notify: @pagerduty
   EOT
 
-# Alert if any check in the last 5m reports stale (>=1) for this specific controller+job
+  # Alert if any check in the last 5m reports stale (>=1) for this specific controller+job
   query               = "max(last_5m):avg:jenkins.build_report.stale{controller:${each.value.controller},job:${each.value.job}} by {threshold_in_hours} >= 1"
   notify_audit        = false
   timeout_h           = 0
