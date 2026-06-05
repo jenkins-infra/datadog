@@ -70,5 +70,5 @@ build_report_jobs:
   docs-jenkins-io:
     controller: infra.ci.jenkins.io
     job: website-production-jobs/docs.jenkins.io/main
-    threshold_minutes: 10
+    threshold_minutes: 1440
     enable_alert: true
