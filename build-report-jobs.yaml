@@ -11,7 +11,6 @@ build_report_jobs:
     controller: infra.ci.jenkins.io
     job: kubernetes-jobs/kubernetes-management/main
     threshold_minutes: 1440
-    enable_alert: true   # opt-in for publishing alerts
   terraform-azure:
     controller: infra.ci.jenkins.io
     job: terraform-jobs/azure/main
@@ -66,9 +65,7 @@ build_report_jobs:
     controller: trusted.ci.jenkins.io
     job: update_center
     threshold_minutes: 20  # (2 builds)
-    enable_alert: true   # opt-in for publishing alerts
   docs-jenkins-io:
     controller: infra.ci.jenkins.io
     job: website-production-jobs/docs.jenkins.io/main
     threshold_minutes: 1440
-    enable_alert: true
