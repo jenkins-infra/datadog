@@ -6,7 +6,12 @@
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
 locals {
-  build_report_jobs = yamldecode(file("${path.module}/build-report-jobs.yaml")).build_report_jobs
+  # build-report-jobs.yaml mirrors the instances list in kubernetes-management.
+  # for_each requires a map, so key each instance by controller/job.
+  build_report_jobs = {
+    for inst in yamldecode(file("${path.module}/build-report-jobs.yaml")).instances :
+    "${inst.controller}/${inst.job}" => inst
+  }
 }
 
 resource "datadog_monitor" "build_report_stale" {
