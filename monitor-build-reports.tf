@@ -14,6 +14,7 @@ locals {
   }
 }
 
+
 resource "datadog_monitor" "build_report_stale" {
   for_each = local.build_report_jobs
 
