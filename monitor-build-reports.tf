@@ -6,8 +6,12 @@
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
 locals {
-  build_report_jobs = yamldecode(file("${path.module}/build-report-jobs.yaml")).build_report_jobs
+  build_report_jobs = {
+    for name, job in yamldecode(file("${path.module}/build-report-jobs.yaml")).build_report_jobs :
+    "${job.controller}/${job.job}" => job
+  }
 }
+
 
 resource "datadog_monitor" "build_report_stale" {
   for_each = local.build_report_jobs
