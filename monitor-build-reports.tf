@@ -6,9 +6,11 @@
 # Ref: https://github.com/jenkins-infra/helpdesk/issues/2843
 
 locals {
+  # build-report-jobs.yaml mirrors the instances list in kubernetes-management.
+  # for_each requires a map, so key each instance by controller/job.
   build_report_jobs = {
-    for name, job in yamldecode(file("${path.module}/build-report-jobs.yaml")).build_report_jobs :
-    "${job.controller}/${job.job}" => job
+    for inst in yamldecode(file("${path.module}/build-report-jobs.yaml")).instances :
+    "${inst.controller}/${inst.job}" => inst
   }
 }
 
