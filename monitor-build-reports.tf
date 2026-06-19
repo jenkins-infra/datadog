@@ -26,7 +26,7 @@ resource "datadog_monitor" "build_report_stale" {
 
     - The build report for {{ job.name }} on {{ controller.name }} has not been updated in over {{ threshold_in_hours.name }} hour(s)
     - Check the job on the private controller {{ controller.name }}
-    - Job URL: https://{{ controller.name }}/job/{{ job.name }}
+    - Job URL: https://${each.value.controller}/job/${replace(each.value.job, "/", "/job/")}
     - Report: https://builds.reports.jenkins.io/build_status_reports/{{ controller.name }}/{{ job.name }}/status.json
 
     - https://github.com/jenkins-infra/helpdesk/issues/2843
