@@ -2,7 +2,7 @@ resource "datadog_synthetics_test" "accountsApp" {
   type = "api"
   request_definition {
     method = "GET"
-    url    = "https://accounts.jenkins.io"
+    url    = "https://accounts.jenkins.io/login"
   }
   assertion {
     type     = "statusCode"
