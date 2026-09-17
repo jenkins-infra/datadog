@@ -21,7 +21,7 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The plugin health {{ engine.name }} has not recorded a success in over {{ threshold_in_hours.name }} hour(s)
+    - The plugin health ${each.value} has not recorded a success in over {{ threshold_in_hours.name }} hour(s)
     - The status field is derived from the last success and never expires, so this can be stale while still reporting UP
     - Health: https://plugin-health.jenkins.io/actuator/health/engines
     - Check the cronjob schedule on publick8s
@@ -32,11 +32,9 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
 
     {{#is_recovery}}
 
-    - Plugin health {{ engine.name }} is recording successes again
+    - Plugin health ${each.value} is recording successes again
 
     {{/is_recovery}}
-
-    Notify: @pagerduty
   EOT
 
   # Alert if any check in the last 5m reports stale (>=1) for this specific engine
@@ -46,8 +44,9 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  # Kept as a draft until the thresholds have been observed against real data
-  draft_status = "draft"
+  # Published without a notification target: it evaluates and is visible in Datadog
+  # but pages nobody until the thresholds have been confirmed against real data
+  draft_status = "published"
 
   monitor_thresholds {
     critical = 1
@@ -65,7 +64,7 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The plugin health actuator endpoint is unreachable, so {{ engine.name }} cannot be checked
+    - The plugin health actuator endpoint is unreachable, so ${each.value} cannot be checked
     - Health: https://plugin-health.jenkins.io/actuator/health/engines
 
     - https://github.com/jenkins-infra/helpdesk/issues/5257
@@ -77,8 +76,6 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
     - Plugin health actuator endpoint is reachable again
 
     {{/is_recovery}}
-
-    Notify: @pagerduty
   EOT
 
   # Alert if the actuator endpoint was unreachable for all checks in the last 5m
@@ -88,8 +85,9 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  # Kept as a draft until the thresholds have been observed against real data
-  draft_status = "draft"
+  # Published without a notification target: it evaluates and is visible in Datadog
+  # but pages nobody until the thresholds have been confirmed against real data
+  draft_status = "published"
 
   monitor_thresholds {
     critical = 1
