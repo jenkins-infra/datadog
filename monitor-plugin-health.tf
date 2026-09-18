@@ -8,6 +8,8 @@
 locals {
   # Both engines are components of a single actuator response, so the list is defined
   # here rather than mirrored from kubernetes-management.
+  # Datadog normalises tag values to lowercase, so the queries below match on the
+  # lowercased name while the monitor names keep the camel case used by the actuator.
   plugin_health_engines = toset(["probeEngine", "scoringEngine"])
 }
 
@@ -38,7 +40,7 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
   EOT
 
   # Alert if any check in the last 5m reports stale (>=1) for this specific engine
-  query               = "max(last_5m):avg:jenkins.phs_engine.stale{engine:${each.value}} by {threshold_in_hours} >= 1"
+  query               = "max(last_5m):avg:jenkins.phs_engine.stale{engine:${lower(each.value)}} by {threshold_in_hours} >= 1"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
@@ -79,7 +81,7 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
   EOT
 
   # Alert if the actuator endpoint was unreachable for all checks in the last 5m
-  query               = "min(last_5m):avg:jenkins.phs_engine.reachable{engine:${each.value}} < 1"
+  query               = "min(last_5m):avg:jenkins.phs_engine.reachable{engine:${lower(each.value)}} < 1"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
