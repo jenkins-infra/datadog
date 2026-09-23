@@ -84,8 +84,9 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
     Notify: @pagerduty
   EOT
 
-  # Alert if any check in the window could not reach the endpoint
-  query               = "min(last_2h):avg:jenkins.phs_engine.reachable{engine:${lower(each.value)}} < 1"
+  # Alert only if every check in the window failed to reach the endpoint, so a
+  # single transient failure does not page anyone
+  query               = "max(last_2h):avg:jenkins.phs_engine.reachable{engine:${lower(each.value)}} < 1"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
