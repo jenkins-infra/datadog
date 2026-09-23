@@ -23,7 +23,7 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
   message = <<-EOT
     {{#is_alert}}
 
-    - The plugin health ${each.value} has not recorded a success in over {{ threshold_in_hours.name }} hour(s)
+    - The plugin health ${each.value} last recorded a success {{ value }} hour(s) ago
     - The status field is derived from the last success and never expires, so this can be stale while still reporting UP
     - Health: https://plugin-health.jenkins.io/actuator/health/engines
     - Check the cronjob schedule on publick8s
@@ -37,21 +37,23 @@ resource "datadog_monitor" "plugin_health_engine_stale" {
     - Plugin health ${each.value} is recording successes again
 
     {{/is_recovery}}
+
+    Notify: @pagerduty
   EOT
 
-  # Alert if any check in the last 5m reports stale (>=1) for this specific engine
-  query               = "max(last_5m):avg:jenkins.phs_engine.stale{engine:${lower(each.value)}} by {threshold_in_hours} >= 1"
+  # The check submits hourly, so the window has to be wide enough to hold a point.
+  # Warning is two missed runs, critical is six.
+  query               = "max(last_2h):avg:jenkins.phs_engine.age_in_hours{engine:${lower(each.value)}} > 6"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  # Published without a notification target: it evaluates and is visible in Datadog
-  # but pages nobody until the thresholds have been confirmed against real data
-  draft_status = "published"
+  draft_status        = "published"
 
   monitor_thresholds {
-    critical = 1
+    warning  = 2
+    critical = 6
   }
 
   tags = ["terraformed:true", "*"]
@@ -78,18 +80,18 @@ resource "datadog_monitor" "plugin_health_engine_unreachable" {
     - Plugin health actuator endpoint is reachable again
 
     {{/is_recovery}}
+
+    Notify: @pagerduty
   EOT
 
-  # Alert if the actuator endpoint was unreachable for all checks in the last 5m
-  query               = "min(last_5m):avg:jenkins.phs_engine.reachable{engine:${lower(each.value)}} < 1"
+  # Alert if any check in the window could not reach the endpoint
+  query               = "min(last_2h):avg:jenkins.phs_engine.reachable{engine:${lower(each.value)}} < 1"
   notify_audit        = false
   timeout_h           = 0
   no_data_timeframe   = 120
   renotify_interval   = 60
   require_full_window = false
-  # Published without a notification target: it evaluates and is visible in Datadog
-  # but pages nobody until the thresholds have been confirmed against real data
-  draft_status = "published"
+  draft_status        = "published"
 
   monitor_thresholds {
     critical = 1
