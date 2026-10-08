@@ -1,3 +1,5 @@
+# TODO: import existing application keys
+
 resource "datadog_api_key" "cloudflare" {
   name = "cloudflare"
 }
@@ -32,6 +34,11 @@ resource "datadog_api_key" "publick8s" {
 
 resource "datadog_api_key" "publick8s_sponsored" {
   name = "publick8s-sponsored"
+}
+
+resource "datadog_application_key" "publick8s_sponsored" {
+  name = "publick8s-sponsored"
+  # scopes unset - inherits all user permissions
 }
 
 resource "datadog_api_key" "puppet_managed_vms" {
