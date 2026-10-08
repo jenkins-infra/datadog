@@ -30,6 +30,10 @@ resource "datadog_api_key" "publick8s" {
   name = "prodpublick8s-20220416"
 }
 
+resource "datadog_api_key" "publick8s_sponsored" {
+  name = "publick8s-sponsored"
+}
+
 resource "datadog_api_key" "puppet_managed_vms" {
   name = "agents-on-puppet-managed-vms-key"
 }
